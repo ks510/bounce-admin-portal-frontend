@@ -65,14 +65,14 @@ export default class Home extends Component {
   renderLander() {
     return (
       <div className="lander">
-        <h1>Scratch</h1>
-        <p>A simple note taking app</p>
+        <h1>Bounce Admin Portal</h1>
+        <p>A management portal for Team managers.</p>
         <div>
           <Link to="/login" className="btn btn-info btn-lg">
-            Login
+            Log In
           </Link>
           <Link to="/signup" className="btn btn-success btn-lg">
-            Signup
+            Sign Up
           </Link>
         </div>
       </div>

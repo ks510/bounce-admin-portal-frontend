@@ -55,7 +55,7 @@ class App extends Component {
         <Navbar fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">Scratch</Link>
+              <Link to="/">Bounce Portal</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
@@ -66,14 +66,14 @@ class App extends Component {
                     <LinkContainer to="/settings">
                       <NavItem>Settings</NavItem>
                     </LinkContainer>
-                    <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                    <NavItem onClick={this.handleLogout}>Log Out</NavItem>
                   </Fragment>
                 : <Fragment>
                     <LinkContainer to="/signup">
-                      <NavItem>Signup</NavItem>
+                      <NavItem>Sign Up</NavItem>
                     </LinkContainer>
                     <LinkContainer to="/login">
-                      <NavItem>Login</NavItem>
+                      <NavItem>Log In</NavItem>
                     </LinkContainer>
                   </Fragment>
               }
