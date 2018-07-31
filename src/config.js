@@ -1,4 +1,5 @@
 const dev = {
+  STRIPE_KEY: "pk_test_56VFAcEKqmW60sJdmfAb0bFs",
   s3: {
     REGION: "eu-west-2",
     BUCKET: "admin-portal-dev-attachmentsbucket-fm4i68pe3llc"
@@ -13,9 +14,11 @@ const dev = {
     APP_CLIENT_ID: "2adh0he4jaicl9v6l3q9g516fk",
     IDENTITY_POOL_ID: "eu-west-2:6f32ac80-cd30-491b-99c9-b181f56eb8bb"
   }
+
 };
 
 const prod = {
+  STRIPE_KEY: "pk_test_56VFAcEKqmW60sJdmfAb0bFs",
   s3: {
     REGION: "eu-west-2",
     BUCKET: "admin-portal-prod-attachmentsbucket-14rvb84isit9f"
