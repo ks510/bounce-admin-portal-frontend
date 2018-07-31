@@ -1,34 +1,34 @@
 const dev = {
   s3: {
-    REGION: "us-east-1",
-    BUCKET: "admin-portal-dev-attachmentsbucket-1livu1c7j4uum"
+    REGION: "eu-west-2",
+    BUCKET: "admin-portal-dev-attachmentsbucket-fm4i68pe3llc"
   },
   apiGateway: {
-    REGION: "us-east-1",
-    URL: "https://kzmsils18f.execute-api.us-east-1.amazonaws.com/dev"
+    REGION: "eu-west-2",
+    URL: "https://g19hgig8b4.execute-api.eu-west-2.amazonaws.com/dev"
   },
   cognito: {
-    REGION: "us-east-1",
-    USER_POOL_ID: "us-east-1_9HHcY6pZe",
-    APP_CLIENT_ID: "552bvot3qdc0h78q36nmdloupc",
-    IDENTITY_POOL_ID: "us-east-1:90f81b55-7e31-4f27-91f5-86639b2967e0"
+    REGION: "eu-west-2",
+    USER_POOL_ID: "eu-west-2_XNks9DojJ",
+    APP_CLIENT_ID: "2adh0he4jaicl9v6l3q9g516fk",
+    IDENTITY_POOL_ID: "eu-west-2:6f32ac80-cd30-491b-99c9-b181f56eb8bb"
   }
 };
 
 const prod = {
   s3: {
-    REGION: "us-east-1",
-    BUCKET: "admin-portal-prod-attachmentsbucket-3f3i0f925z84"
+    REGION: "eu-west-2",
+    BUCKET: "admin-portal-prod-attachmentsbucket-14rvb84isit9f"
   },
   apiGateway: {
-    REGION: "us-east-1",
-    URL: "https://wrphrz5emk.execute-api.us-east-1.amazonaws.com/prod"
+    REGION: "eu-west-2",
+    URL: "https://5tdirmxzy6.execute-api.eu-west-2.amazonaws.com/prod"
   },
   cognito: {
-    REGION: "us-east-1",
-    USER_POOL_ID: "us-east-1_QLs83dUxf",
-    APP_CLIENT_ID: "3tqkiiagesqiuuah0fpkoat5lf",
-    IDENTITY_POOL_ID: "us-east-1:d120818d-2859-4c44-99a6-9e8d87bad670"
+    REGION: "eu-west-2",
+    USER_POOL_ID: "eu-west-2_50eAdktSV",
+    APP_CLIENT_ID: "1nr8b3oe05fo47cugo3m11277g",
+    IDENTITY_POOL_ID: "eu-west-2:cd3c9cc0-1af9-40e3-9b8a-fcbb503884b0"
   }
 };
 
