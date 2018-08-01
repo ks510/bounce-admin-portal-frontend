@@ -113,7 +113,6 @@ export default class Signup extends Component {
   renderForm() {
     return (
       <div className="signupform1">
-
         <form onSubmit={this.handleSubmit}>
         <h3>Improve your team today.</h3>
           <FormGroup controlId="email" bsSize="large">
@@ -177,7 +176,7 @@ export default class Signup extends Component {
             disabled={!this.validateForm()}
             type="submit"
             isLoading={this.state.isLoading}
-            text="Signup"
+            text="Sign Up"
             loadingText="Signing up…"
           />
         </form>
