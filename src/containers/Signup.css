@@ -5,7 +5,18 @@
 
   .Signup form {
     margin: 0 auto;
-    max-width: 320px;
+    max-width: 400px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
+    color: ##3B4045;
+  }
+
+  .Signup form h3 {
+    font-size: 30px;
+    padding-bottom: 20px;
+    font-style: bold;
+    font-weight: 900;
+    text-align: center;
   }
 }
 

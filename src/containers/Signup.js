@@ -19,6 +19,9 @@ export default class Signup extends Component {
       password: "",
       confirmPassword: "",
       confirmationCode: "",
+      firstName: "",
+      lastName: "",
+      companyName: "",
       newUser: null
     };
   }
@@ -27,7 +30,10 @@ export default class Signup extends Component {
     return (
       this.state.email.length > 0 &&
       this.state.password.length > 0 &&
-      this.state.password === this.state.confirmPassword
+      this.state.password === this.state.confirmPassword &&
+      this.state.firstName.length > 0 &&
+      this.state.lastName.length > 0 &&
+      this.state.companyName.length > 0
     );
   }
 
@@ -106,42 +112,76 @@ export default class Signup extends Component {
 
   renderForm() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <FormGroup controlId="email" bsSize="large">
-          <ControlLabel>Email</ControlLabel>
-          <FormControl
-            autoFocus
-            type="email"
-            value={this.state.email}
-            onChange={this.handleChange}
+      <div className="signupform1">
+
+        <form onSubmit={this.handleSubmit}>
+        <h3>Improve your team today.</h3>
+          <FormGroup controlId="email" bsSize="large">
+            <ControlLabel>Email</ControlLabel>
+            <FormControl
+              autoFocus
+              type="email"
+              value={this.state.email}
+              onChange={this.handleChange}
+              placeholder="johnsmith@bouncebot.io"
+            />
+          </FormGroup>
+          <FormGroup controlId="password" bsSize="large">
+            <ControlLabel>Create a Password</ControlLabel>
+            <FormControl
+              value={this.state.password}
+              onChange={this.handleChange}
+              type="password"
+              placeholder="Minimum 8 characters"
+            />
+          </FormGroup>
+          <FormGroup controlId="confirmPassword" bsSize="large">
+            <ControlLabel>Confirm your Password</ControlLabel>
+            <FormControl
+              value={this.state.confirmPassword}
+              onChange={this.handleChange}
+              type="password"
+              placeholder="Retype your password"
+            />
+          </FormGroup>
+          <FormGroup controlId="firstName" bsSize="large">
+            <ControlLabel>First Name</ControlLabel>
+            <FormControl
+              value={this.state.firstName}
+              onChange={this.handleChange}
+              type="firstName"
+              placeholder="John"
+            />
+          </FormGroup>
+          <FormGroup controlId="lastName" bsSize="large">
+            <ControlLabel>First Name</ControlLabel>
+            <FormControl
+              value={this.state.lastName}
+              onChange={this.handleChange}
+              type="lastName"
+              placeholder="Smith"
+            />
+          </FormGroup>
+          <FormGroup controlId="companyName" bsSize="large">
+            <ControlLabel>Company Name</ControlLabel>
+            <FormControl
+              value={this.state.companyName}
+              onChange={this.handleChange}
+              type="companyName"
+              placeholder="Bounce Technologies"
+            />
+          </FormGroup>
+          <LoaderButton
+            block
+            bsSize="large"
+            disabled={!this.validateForm()}
+            type="submit"
+            isLoading={this.state.isLoading}
+            text="Signup"
+            loadingText="Signing up…"
           />
-        </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
-          <ControlLabel>Password</ControlLabel>
-          <FormControl
-            value={this.state.password}
-            onChange={this.handleChange}
-            type="password"
-          />
-        </FormGroup>
-        <FormGroup controlId="confirmPassword" bsSize="large">
-          <ControlLabel>Confirm Password</ControlLabel>
-          <FormControl
-            value={this.state.confirmPassword}
-            onChange={this.handleChange}
-            type="password"
-          />
-        </FormGroup>
-        <LoaderButton
-          block
-          bsSize="large"
-          disabled={!this.validateForm()}
-          type="submit"
-          isLoading={this.state.isLoading}
-          text="Signup"
-          loadingText="Signing up…"
-        />
-      </form>
+        </form>
+      </div>
     );
   }
 
