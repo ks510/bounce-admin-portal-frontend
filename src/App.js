@@ -55,7 +55,7 @@ class App extends Component {
         <Navbar fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">Bounce Portal</Link>
+              <Link to="/">Bounce for Teams</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
