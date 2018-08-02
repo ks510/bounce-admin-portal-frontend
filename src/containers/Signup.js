@@ -102,6 +102,9 @@ export default class Signup extends Component {
   renderConfirmationForm() {
     return (
       <form onSubmit={this.handleConfirmationSubmit}>
+        <h3>One last step.</h3>
+        <p id="verify">You&#39;ll receive an email within a few minutes to verify your
+        account with a confirmation code. Please enter the code below.</p>
         <FormGroup controlId="confirmationCode" bsSize="large">
           <ControlLabel>Confirmation Code</ControlLabel>
           <FormControl
