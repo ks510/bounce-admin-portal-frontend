@@ -9,11 +9,12 @@
     font-family: 'Quicksand', sans-serif;
     font-weight: bold;
     color: ##3B4045;
+    padding-bottom: 50px;
   }
 
   .Signup form h3 {
     font-size: 30px;
-    padding-bottom: 20px;
+    padding-bottom: 25px;
     font-style: bold;
     font-weight: 900;
     text-align: center;

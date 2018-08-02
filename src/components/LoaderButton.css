@@ -15,6 +15,7 @@
   border: none;
   color: #FFFFFF;
   background-color: #56CA9C;
+  margin: 20px auto;
 }
 
 .LoaderButton:disabled, .LoaderButton:disabled:hover, .LoaderButton:disabled:active {

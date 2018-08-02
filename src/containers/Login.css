@@ -8,7 +8,8 @@
     max-width: 400px;
     font-family: 'Quicksand', sans-serif;
     font-weight: bold;
-    color: ##3B4045;
+    color: #3B4045;
+    padding-bottom: 50px;
   }
 
   .Login form h3 {
