@@ -7,3 +7,16 @@
   from { transform: scale(1) rotate(0deg); }
   to { transform: scale(1) rotate(360deg); }
 }
+
+.LoaderButton, .LoaderButton:hover, .LoaderButton:visited, .LoaderButton:active {
+  max-width: 50%;
+  margin: auto;
+  border-radius: 30px;
+  border: none;
+  color: #FFFFFF;
+  background-color: #56CA9C;
+}
+
+.LoaderButton:disabled, .LoaderButton:disabled:hover, .LoaderButton:disabled:active {
+  background-color: #7EDCBE;
+}
