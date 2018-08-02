@@ -1,23 +1,9 @@
 .LoaderButton .spinning.glyphicon {
-  margin-right: 5px;
+  margin-right: 7px;
   top: 2px;
   animation: spin 1s infinite linear;
 }
 @keyframes spin {
   from { transform: scale(1) rotate(0deg); }
   to { transform: scale(1) rotate(360deg); }
-}
-
-.LoaderButton, .LoaderButton:hover, .LoaderButton:visited, .LoaderButton:active,
-.LoaderButton:disabled {
-  width: 40%;
-  border-radius: 100px;
-  background-color: #56CA9C;
-  color: #FFFFFF;
-  border: none;
-  margin: auto;
-}
-
-.LoaderButton:disabled, .LoaderButton:disabled:hover {
-  background-color: #7EDCBE;
 }
