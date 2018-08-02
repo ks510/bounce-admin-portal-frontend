@@ -3,7 +3,8 @@ import {
   HelpBlock,
   FormGroup,
   FormControl,
-  ControlLabel
+  ControlLabel,
+  Checkbox
 } from "react-bootstrap";
 import { Auth } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
@@ -22,6 +23,7 @@ export default class Signup extends Component {
       firstName: "",
       lastName: "",
       companyName: "",
+      agreeChecked: false,
       newUser: null
     };
   }
@@ -33,7 +35,8 @@ export default class Signup extends Component {
       this.state.password === this.state.confirmPassword &&
       this.state.firstName.length > 0 &&
       this.state.lastName.length > 0 &&
-      this.state.companyName.length > 0
+      this.state.companyName.length > 0 &&
+      this.state.agreeChecked
     );
   }
 
@@ -44,6 +47,12 @@ export default class Signup extends Component {
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
+    });
+  }
+
+  handleChangeCheckbox = event => {
+    this.setState({
+      [event.target.id]: event.target.checked
     });
   }
 
@@ -171,6 +180,13 @@ export default class Signup extends Component {
               placeholder="Bounce Technologies"
             />
           </FormGroup>
+          <Checkbox
+            id="agreeChecked"
+            checked={this.state.agreeChecked}
+            onChange={this.handleChangeCheckbox}
+            title="agreeChecked">
+            I have read and agree to Bounce Terms of Service and Privacy Policy.
+          </Checkbox>
           <LoaderButton
             block
             bsSize="large"
