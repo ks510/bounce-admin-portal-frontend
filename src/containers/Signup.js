@@ -10,6 +10,9 @@ import { Auth } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
 import "./Signup.css";
 
+/**
+ * Two-page Sign Up with verification by code for Bounce Portal
+ */
 export default class Signup extends Component {
   constructor(props) {
     super(props);
@@ -29,6 +32,10 @@ export default class Signup extends Component {
     };
   }
 
+  /**
+  * Validates page 1 of Sign Up form by checking all fields are filled in,
+  * both password fields match exactly and the agreement checkbox is checked.
+  */
   validateFormPageOne() {
     return (
       this.state.email.length > 0 &&
@@ -38,6 +45,9 @@ export default class Signup extends Component {
     );
   }
 
+  /**
+  * Validates page 2 of Sign Up by checking all fields are filled in.
+  */
   validateFormPageTwo() {
     return (
       this.state.firstName.length > 0 &&
@@ -46,6 +56,9 @@ export default class Signup extends Component {
     );
   }
 
+  /**
+  * Validates confirmation code field (non-empty)
+  */
   validateConfirmationForm() {
     return this.state.confirmationCode.length > 0;
   }
@@ -62,6 +75,9 @@ export default class Signup extends Component {
     });
   }
 
+  /**
+  * Updates the state of sign up progression
+  */
   handleSubmitPageOne = async event => {
     event.preventDefault();
 
@@ -69,6 +85,10 @@ export default class Signup extends Component {
     this.setState({ isLoading: false });
   }
 
+  /**
+  * Makes request to AWS Cognito to sign up user. Sign up progression is updated
+  * if an error occurs to redirect user back to page 1 of Sign up.
+  */
   handleSubmitPageTwo = async event => {
     event.preventDefault();
 
@@ -101,6 +121,7 @@ export default class Signup extends Component {
     this.setState({ isLoading: false });
   }
 
+
   handleConfirmationSubmit = async event => {
     event.preventDefault();
 
@@ -118,7 +139,9 @@ export default class Signup extends Component {
     }
   }
 
-
+  /**
+  * Renders verification page for user to input confirmation code from their email
+  */
   renderConfirmationForm() {
     return (
       <form onSubmit={this.handleConfirmationSubmit}>
@@ -148,6 +171,9 @@ export default class Signup extends Component {
     );
   }
 
+  /**
+  * Decision for rendering page 1 or page 2 of sign up based on current state
+  */
   renderForm() {
     return (
       <div>
@@ -158,6 +184,11 @@ export default class Signup extends Component {
     );
   }
 
+  /**
+  * Renders page 1 of Sign Up form with the following fields:
+  * - Email
+  * -
+  */
   renderForm1() {
     return (
       <div className="signupform1">
@@ -213,6 +244,13 @@ export default class Signup extends Component {
     );
   }
 
+  /**
+   * Renders page 2 of Sign Up with the following fields:
+   * - First Name
+   * - Last Name
+   * - Company Name
+   * These are stored as attributes with user sign up profile in Cognito.
+   */
   renderForm2() {
     return (
       <div className="signupform2">
