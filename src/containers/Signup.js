@@ -24,19 +24,25 @@ export default class Signup extends Component {
       lastName: "",
       companyName: "",
       agreeChecked: false,
-      newUser: null
+      newUser: null,
+      pageOneComplete: false
     };
   }
 
-  validateForm() {
+  validateFormPageOne() {
     return (
       this.state.email.length > 0 &&
       this.state.password.length > 0 &&
       this.state.password === this.state.confirmPassword &&
+      this.state.agreeChecked
+    );
+  }
+
+  validateFormPageTwo() {
+    return (
       this.state.firstName.length > 0 &&
       this.state.lastName.length > 0 &&
-      this.state.companyName.length > 0 &&
-      this.state.agreeChecked
+      this.state.companyName.length > 0
     );
   }
 
@@ -56,7 +62,14 @@ export default class Signup extends Component {
     });
   }
 
-  handleSubmit = async event => {
+  handleSubmitPageOne = async event => {
+    event.preventDefault();
+
+    this.setState({ isLoading: true, pageOneComplete: true });
+    this.setState({ isLoading: false });
+  }
+
+  handleSubmitPageTwo = async event => {
     event.preventDefault();
 
     this.setState({ isLoading: true });
@@ -77,6 +90,12 @@ export default class Signup extends Component {
       });
     } catch (e) {
       alert(e.message);
+      this.setState({ pageOneComplete: false });
+      /* EMAIL UNAVAILABLE ERROR MSG
+      if (e.message === "An account with the given email already exists.") {
+        this.setState({ pageOneComplete: false });
+      }
+      */
     }
 
     this.setState({ isLoading: false });
@@ -98,6 +117,7 @@ export default class Signup extends Component {
       this.setState({ isLoading: false });
     }
   }
+
 
   renderConfirmationForm() {
     return (
@@ -130,9 +150,19 @@ export default class Signup extends Component {
 
   renderForm() {
     return (
+      <div>
+      {this.state.pageOneComplete
+        ? this.renderForm2()
+        : this.renderForm1()}
+      </div>
+    );
+  }
+
+  renderForm1() {
+    return (
       <div className="signupform1">
 
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmitPageOne}>
         <h3>Improve your team today.</h3>
           <FormGroup controlId="email" bsSize="large">
             <ControlLabel>Email</ControlLabel>
@@ -162,6 +192,33 @@ export default class Signup extends Component {
               placeholder="Retype your password"
             />
           </FormGroup>
+          <Checkbox
+            id="agreeChecked"
+            checked={this.state.agreeChecked}
+            onChange={this.handleChangeCheckbox}
+            title="agreeChecked">
+            I have read and agree to Bounce Terms of Service and Privacy Policy.
+          </Checkbox>
+          <LoaderButton
+            block
+            bsSize="large"
+            disabled={!this.validateFormPageOne()}
+            type="submit"
+            isLoading={this.state.isLoading}
+            text="Sign Up"
+            loadingText="Signing up…"
+          />
+        </form>
+      </div>
+    );
+  }
+
+  renderForm2() {
+    return (
+      <div className="signupform2">
+
+        <form onSubmit={this.handleSubmitPageTwo}>
+        <h3>Almost there.</h3>
           <FormGroup controlId="firstName" bsSize="large">
             <ControlLabel>First Name</ControlLabel>
             <FormControl
@@ -189,17 +246,10 @@ export default class Signup extends Component {
               placeholder="Bounce Technologies"
             />
           </FormGroup>
-          <Checkbox
-            id="agreeChecked"
-            checked={this.state.agreeChecked}
-            onChange={this.handleChangeCheckbox}
-            title="agreeChecked">
-            I have read and agree to Bounce Terms of Service and Privacy Policy.
-          </Checkbox>
           <LoaderButton
             block
             bsSize="large"
-            disabled={!this.validateForm()}
+            disabled={!this.validateFormPageTwo()}
             type="submit"
             isLoading={this.state.isLoading}
             text="Sign Up"
@@ -207,7 +257,7 @@ export default class Signup extends Component {
           />
         </form>
       </div>
-    );
+    )
   }
 
   render() {
