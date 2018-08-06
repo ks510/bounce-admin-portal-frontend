@@ -3,6 +3,7 @@ import { Auth } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel, HelpBlock } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import "./Login.css";
+import { Link } from "react-router-dom";
 
 export default class Login extends Component {
   constructor(props) {
@@ -60,7 +61,9 @@ export default class Login extends Component {
               onChange={this.handleChange}
               type="password"
             />
-            <HelpBlock>Forgot your password?</HelpBlock>
+            <HelpBlock>
+              <Link to="/forgotpassword">Forgot your password?</Link>
+            </HelpBlock>
           </FormGroup>
           <LoaderButton
             block
