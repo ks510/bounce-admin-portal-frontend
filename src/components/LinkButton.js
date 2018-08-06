@@ -7,15 +7,12 @@ export default ({
   text,
   className = "",
   disabled = false,
-  link = "",
   ...props
 }) =>
-  <LinkContainer to={link}>
-    <Button
-      className={`LinkButton ${className}`}
-      disabled={disabled}
-      {...props}
-    >
-      {text}
-    </Button>
-  </LinkContainer>;
+  <Button
+    className={`LinkButton ${className}`}
+    disabled={disabled}
+    {...props}
+  >
+    {text}
+  </Button>;

@@ -11,7 +11,7 @@ export default class ResetPasswordSuccess extends Component {
         <LinkButton
           bsSize="large"
           text="Go to Management Portal"
-          link="/" />
+          href="/" />
       </div>
     );
   }

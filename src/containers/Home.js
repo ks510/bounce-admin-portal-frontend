@@ -79,7 +79,7 @@ export default class Home extends Component {
     );
   }
 
-  renderNotes() {
+  renderPortalLanding() {
     return (
       <div className="notes">
         <PageHeader>Your Notes</PageHeader>
@@ -93,7 +93,7 @@ export default class Home extends Component {
   render() {
     return (
       <div className="Home">
-        {this.props.isAuthenticated ? this.renderNotes() : this.renderLander()}
+        {this.props.isAuthenticated ? this.renderPortalLanding() : this.renderLander()}
       </div>
     );
   }
