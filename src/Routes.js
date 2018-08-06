@@ -9,7 +9,7 @@ import NotFound from "./containers/NotFound";
 import AppliedRoute from "./components/AppliedRoute";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
-import Settings from "./containers/Settings";
+import SubscriptionPayment from "./containers/SubscriptionPayment";
 import ForgotPassword from "./containers/ForgotPassword";
 import TermsOfService from "./containers/TermsOfService";
 import PrivacyPolicy from "./containers/PrivacyPolicy";
@@ -22,7 +22,7 @@ export default ({ childProps }) =>
     <UnauthenticatedRoute path="/forgotpassword" exact component={ForgotPassword} props={childProps} />
     <UnauthenticatedRoute path="/termsofservice" exact component={TermsOfService} props={childProps} />
     <UnauthenticatedRoute path="/privacypolicy" exact component={PrivacyPolicy} props={childProps} />
-    <AuthenticatedRoute path="/settings" exact component={Settings} props={childProps} />
+    <AuthenticatedRoute path="/subscriptionpayment" exact component={SubscriptionPayment} props={childProps} />
     <AuthenticatedRoute path="/notes/new" exact component={NewNote} props={childProps} />
     <AuthenticatedRoute path="/notes/:id" exact component={Notes} props={childProps} />
     { /* Finally, catch all unmatched routes */ }
