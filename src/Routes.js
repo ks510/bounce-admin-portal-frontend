@@ -14,6 +14,7 @@ import ForgotPassword from "./containers/ForgotPassword";
 import TermsOfService from "./containers/TermsOfService";
 import PrivacyPolicy from "./containers/PrivacyPolicy";
 import ResetPasswordSuccess from "./containers/ResetPasswordSuccess";
+import AccountChangePassword from "./containers/AccountChangePassword";
 
 export default ({ childProps }) =>
   <Switch>
@@ -26,6 +27,7 @@ export default ({ childProps }) =>
     <AuthenticatedRoute path="/subscriptionpayment" exact component={SubscriptionPayment} props={childProps} />
     <AuthenticatedRoute path="/notes/new" exact component={NewNote} props={childProps} />
     <AuthenticatedRoute path="/notes/:id" exact component={Notes} props={childProps} />
+    <AuthenticatedRoute path="/account/changepassword" exact component={AccountChangePassword} props={childProps} />
     <AuthenticatedRoute path="/resetpasswordsuccess" exact component={ResetPasswordSuccess} props={childProps} />
     { /* Finally, catch all unmatched routes */ }
     <Route component={NotFound} />

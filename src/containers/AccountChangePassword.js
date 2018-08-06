@@ -13,7 +13,6 @@ export default class AccountChangePassword extends Component {
     super(props);
 
     this.state = {
-      email: "",
       oldPassword: "",
       newPassword: "",
       confirmNewPassword: "",
@@ -37,9 +36,8 @@ export default class AccountChangePassword extends Component {
 
 
     try {
-      await Auth.forgotPasswordSubmit(this.state.email,this.state.confirmationCode,this.state.password);
-      await Auth.signIn(this.state.email, this.state.password);
-      this.props.userHasAuthenticated(true);
+      const user = await Auth.currentAuthenticatedUser();
+      await Auth.changePassword(user, this.state.oldPassword, this.state.newPassword);
       this.props.history.push("/resetpasswordsuccess");
     } catch (e) {
       alert(e.message);
@@ -47,9 +45,8 @@ export default class AccountChangePassword extends Component {
     this.setState({ isLoading: false });
   }
 
-  validateForm() {
+  validateResetPasswordForm() {
     return (
-      this.state.
       this.state.oldPassword.length > 8 &&
       this.state.newPassword.length > 8 &&
       this.state.confirmNewPassword === this.state.newPassword
@@ -60,31 +57,30 @@ export default class AccountChangePassword extends Component {
     return (
       <div className="ChangePasswordForm">
         <form onSubmit={this.handleResetPasswordSubmit}>
-          <h3>Verify your account.</h3>
-          <p>Please enter the confirmation code and your new password.</p>
-          <FormGroup controlId="confirmationCode" bsSize="large">
-            <ControlLabel>Confirmation Code</ControlLabel>
+          <h3>Change your password.</h3>
+          <p>Please enter your current password to confirm you are the account
+          owner and enter your new password below.</p>
+          <FormGroup controlId="oldPassword" bsSize="large">
+            <ControlLabel>Current password</ControlLabel>
             <FormControl
-              autoFocus
-              type="tel"
-              value={this.state.confirmationCode}
+              value={this.state.oldPassword}
               onChange={this.handleChange}
+              type="password"
             />
-            <HelpBlock>Please check your email for the code.</HelpBlock>
           </FormGroup>
-          <FormGroup controlId="password" bsSize="large">
-            <ControlLabel>Create your new password</ControlLabel>
+          <FormGroup controlId="newPassword" bsSize="large">
+            <ControlLabel>New password</ControlLabel>
             <FormControl
-              value={this.state.password}
+              value={this.state.newPassword}
               onChange={this.handleChange}
               type="password"
               placeholder="Minimum 8 characters"
             />
           </FormGroup>
-          <FormGroup controlId="confirmPassword" bsSize="large">
-            <ControlLabel>Confirm your new password</ControlLabel>
+          <FormGroup controlId="confirmNewPassword" bsSize="large">
+            <ControlLabel>Confirm new password</ControlLabel>
             <FormControl
-              value={this.state.confirmPassword}
+              value={this.state.confirmNewPassword}
               onChange={this.handleChange}
               type="password"
               placeholder="Retype your password"
@@ -94,10 +90,10 @@ export default class AccountChangePassword extends Component {
             block
             bsSize="large"
             disabled={!this.validateResetPasswordForm()}
-            type="verify"
+            type="submit"
             isLoading={this.state.isLoading}
             text="Change Password"
-            loadingText="Changing Password.."
+            loadingText="Changing Password..."
           />
         </form>
       </div>
