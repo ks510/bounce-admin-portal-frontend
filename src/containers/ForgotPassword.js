@@ -14,8 +14,10 @@ export default class ForgotPassword extends Component {
     super(props);
 
     this.state = {
-      email: "",
+      email: "laurahappy1234@outlook.com",
       confirmationCode: "",
+      password: "",
+      confirmPassword: "",
       codeSent: false,
       isLoading: false
     };
@@ -28,8 +30,21 @@ export default class ForgotPassword extends Component {
   }
 
   /**
-   * Request Cognito to send a verification code to user's email
+   * Request Cognito to confirm code and reset password to new one.
    **/
+  handleResetPasswordSubmit = async event => {
+    event.preventDefault();
+
+    this.setState({ isLoading: true });
+
+    try {
+      await Auth.forgotPasswordSubmit(this.state.email,this.state.confirmationCode,this.state.password);
+    } catch (e) {
+      alert(e.message);
+    }
+    this.setState({ isLoading: false });
+  }
+
   handleEmailSubmit = async event => {
     event.preventDefault();
 
@@ -40,8 +55,8 @@ export default class ForgotPassword extends Component {
       this.setState({ codeSent: true });
     } catch (e) {
       alert(e.message);
-      this.setState({ isLoading: false });
     }
+    this.setState({ isLoading: false });
   }
 
   /**
@@ -51,25 +66,69 @@ export default class ForgotPassword extends Component {
     return this.state.email.length > 0;
   }
 
+  validateResetPasswordForm() {
+    return (
+      this.state.confirmationCode.length > 0 &&
+      this.state.password.length > 8 &&
+      this.state.confirmPassword === this.state.password
+    );
+  }
+
   render() {
     return (
       <div className="ForgotPassword">
-        {this.state.codeSent
+        {!this.state.codeSent
           ? this.renderResetPasswordForm()
           : this.renderEmailForm()}
       </div>
     );
   }
 
-  renderEmailForm2() {
-    return (
-      <p>Please enter the email of your account to reset your password.</p>
-    );
-  }
-
   renderResetPasswordForm() {
     return (
-      <p>Please enter the confirmation code and your new password.</p>
+      <div className="ConfirmationForm">
+        <form onSubmit={this.handleResetPasswordSubmit}>
+          <h3>Verify your account.</h3>
+          <p>Please enter the confirmation code and your new password.</p>
+          <FormGroup controlId="confirmationCode" bsSize="large">
+            <ControlLabel>Confirmation Code</ControlLabel>
+            <FormControl
+              autoFocus
+              type="tel"
+              value={this.state.confirmationCode}
+              onChange={this.handleChange}
+            />
+            <HelpBlock>Please check your email for the code.</HelpBlock>
+          </FormGroup>
+          <FormGroup controlId="password" bsSize="large">
+            <ControlLabel>Create your new password</ControlLabel>
+            <FormControl
+              value={this.state.password}
+              onChange={this.handleChange}
+              type="password"
+              placeholder="Minimum 8 characters"
+            />
+          </FormGroup>
+          <FormGroup controlId="confirmPassword" bsSize="large">
+            <ControlLabel>Confirm your new password</ControlLabel>
+            <FormControl
+              value={this.state.confirmPassword}
+              onChange={this.handleChange}
+              type="password"
+              placeholder="Retype your password"
+            />
+          </FormGroup>
+          <LoaderButton
+            block
+            bsSize="large"
+            disabled={!this.validateResetPasswordForm()}
+            type="verify"
+            isLoading={this.state.isLoading}
+            text="Change Password"
+            loadingText="Changing Password.."
+          />
+        </form>
+      </div>
     );
   }
 
@@ -80,7 +139,7 @@ export default class ForgotPassword extends Component {
           <h3>Reset your password.</h3>
           <p>Please enter the email of your account to reset your password.
           You&#39;ll receive an email within a few minutes to with a code for
-          resetting your account password. Please enter the code below.</p>
+          resetting your account password.</p>
           <FormGroup controlId="email" bsSize="large">
             <ControlLabel>Email</ControlLabel>
             <FormControl
