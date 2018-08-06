@@ -14,7 +14,7 @@ export default class ForgotPassword extends Component {
     super(props);
 
     this.state = {
-      email: "laurahappy1234@outlook.com",
+      email: "",
       confirmationCode: "",
       password: "",
       confirmPassword: "",
@@ -37,8 +37,12 @@ export default class ForgotPassword extends Component {
 
     this.setState({ isLoading: true });
 
+
     try {
       await Auth.forgotPasswordSubmit(this.state.email,this.state.confirmationCode,this.state.password);
+      await Auth.signIn(this.state.email, this.state.password);
+      this.props.userHasAuthenticated(true);
+      this.props.history.push("/");
     } catch (e) {
       alert(e.message);
     }
@@ -77,7 +81,7 @@ export default class ForgotPassword extends Component {
   render() {
     return (
       <div className="ForgotPassword">
-        {!this.state.codeSent
+        {this.state.codeSent
           ? this.renderResetPasswordForm()
           : this.renderEmailForm()}
       </div>
