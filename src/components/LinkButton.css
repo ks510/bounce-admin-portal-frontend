@@ -1,4 +1,4 @@
-.LinkButton, .LinkButton:active, .LinkButton:visited {
+.LinkButton, .LinkButton:active, .LinkButton:hover, .LinkButton:visited {
   max-width: 50%;
   margin: auto;
   border-radius: 30px;
