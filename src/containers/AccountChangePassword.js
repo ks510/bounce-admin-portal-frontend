@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./AccountChangePassword.css";
 import {
   HelpBlock,
   FormGroup,
@@ -7,6 +8,7 @@ import {
 } from "react-bootstrap";
 import { Auth } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
+
 
 export default class AccountChangePassword extends Component {
   constructor(props) {
@@ -55,7 +57,7 @@ export default class AccountChangePassword extends Component {
 
   render() {
     return (
-      <div className="ChangePasswordForm">
+      <div className="AccountChangePassword">
         <form onSubmit={this.handleResetPasswordSubmit}>
           <h3>Change your password.</h3>
           <p>Please enter your current password to confirm you are the account
@@ -76,6 +78,8 @@ export default class AccountChangePassword extends Component {
               type="password"
               placeholder="Minimum 8 characters"
             />
+            <HelpBlock>Must contain at least one lowercase, uppercase, digit and
+            a special character</HelpBlock>
           </FormGroup>
           <FormGroup controlId="confirmNewPassword" bsSize="large">
             <ControlLabel>Confirm new password</ControlLabel>
