@@ -6,6 +6,7 @@ import {
   ControlLabel,
   Checkbox
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
 import "./Signup.css";
@@ -228,7 +229,8 @@ export default class Signup extends Component {
             checked={this.state.agreeChecked}
             onChange={this.handleChangeCheckbox}
             title="agreeChecked">
-            I have read and agree to Bounce Terms of Service and Privacy Policy.
+            I have read and agree to Bounce&#39;s <Link to="/termsofservice">Terms of Service </Link>
+            and <Link to="/privacypolicy">Privacy Policy</Link>.
           </Checkbox>
           <LoaderButton
             block
