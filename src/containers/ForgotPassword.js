@@ -42,7 +42,7 @@ export default class ForgotPassword extends Component {
       await Auth.forgotPasswordSubmit(this.state.email,this.state.confirmationCode,this.state.password);
       await Auth.signIn(this.state.email, this.state.password);
       this.props.userHasAuthenticated(true);
-      this.props.history.push("/");
+      this.props.history.push("/resetpasswordsuccess");
     } catch (e) {
       alert(e.message);
     }

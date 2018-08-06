@@ -1,0 +1,9 @@
+.LinkButton, .LinkButton:hover, .LinkButton:visited, .LinkButton:active {
+  max-width: 50%;
+  margin: auto;
+  border-radius: 30px;
+  border: none;
+  color: #FFFFFF;
+  background-color: #56CA9C;
+  margin: 20px auto;
+}

@@ -1,13 +1,18 @@
 import React, { Component } from "react";
+import LinkButton from "../components/LinkButton";
+import "./ResetPasswordSuccess.css";
 
 export default class ResetPasswordSuccess extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (
-      <h3>Password Successfully Reset.</h3>
+      <div className="ResetPasswordSuccess">
+        <h3>Password Successfully Reset.</h3>
+        <LinkButton
+          bsSize="large"
+          text="Go to Management Portal"
+          link="/" />
+      </div>
     );
   }
 }
