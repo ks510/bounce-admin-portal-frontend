@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Auth } from "aws-amplify";
 import { ListGroup, ListGroupItem, Checkbox } from "react-bootstrap";
 import LinkButton from "../components/LinkButton";
+import "./Account.css";
 
 export default class Account extends Component {
   constructor(props) {
@@ -37,11 +38,7 @@ export default class Account extends Component {
     this.setState({
       [event.target.id]: event.target.checked
     });
-  }
-
-  updateBillsByEmailChange = async => {
-    this.handleChangeCheckbox;
-    //this method should update user's bills by email preference to DB?
+    //this method should also update user's bills by email preference to DB?
   }
 
   render() {
@@ -75,7 +72,6 @@ export default class Account extends Component {
   }
 
   renderAccountDetailsSwitch(key, attributeNames, userDetails) {
-    console.log(key);
     switch (key) {
       case 'email':
         return <ListGroupItem
@@ -114,25 +110,47 @@ export default class Account extends Component {
                 inline
                 id="billsByEmail"
                 checked={this.state.billsByEmail}
-                onChange={this.updateBillsByEmailChange}
+                onChange={this.handleChangeCheckbox}
                 />
               </ListGroupItem>;
       default:
         return (
-          <ListGroupItem
-            header={this.getAttributeWithValue(attributeNames[key], userDetails[key])}
-          >
+          <ListGroupItem>
+          {this.getAttributeWithValue(attributeNames[key], userDetails[key])}
           </ListGroupItem>
         );
     }
   }
 
   getAttributeWithValue(attributeName, userInfo) {
+    if (attributeName === "Email") {
+      userInfo = this.hideEmail(userInfo);
+    }
     if (attributeName === "Email" || attributeName === "Password") {
       userInfo = userInfo.concat(" ");
     }
     return `${attributeName}: ${userInfo}`;
 
+  }
+
+  /**
+    * Partially hides user's email address by only revealing the first 4
+    * characters and the @ symbol
+    */
+  hideEmail(email) {
+    let endOfDomainNameReached = false;
+    const charArray = email.split('');
+    console.log(charArray);
+    charArray.forEach(function(character, index) {
+      if (index > 3 && character !== '@' && character !== '.' && !endOfDomainNameReached) {
+        charArray[index] = '*';
+      } else if (character === '.') {
+        endOfDomainNameReached = true;
+      }
+    });
+    const hiddenEmail = charArray.join("");
+    console.log(hiddenEmail);
+    return hiddenEmail;
   }
 
 
