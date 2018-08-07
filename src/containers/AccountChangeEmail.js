@@ -28,21 +28,32 @@ export default class AccountChangeEmail extends Component {
   /**
    * Retrieve user's current email from Cognito and verify with user's input.
    **/
-  handleEmailUpdateSubmit= async event => {
+  handleEmailUpdateSubmit = async event => {
     event.preventDefault();
 
     this.setState({ isLoading: true });
 
-
     try {
-      const user = await Auth.currentAuthenticatedUser();
-      const userAttributes = await Auth.userAttributes(user);
-      console.log(userAttributes);
-      this.props.history.push("/");
+      const userInfo = await Auth.currentUserInfo();
+      console.log(userInfo.attributes.email);
+      if (this.confirmCurrentEmail(this.state.currentEmail, userInfo.attributes.email)) {
+        const user = await Auth.currentAuthenticatedUser();
+        await Auth.updateUserAttributes(user, {
+          "email": this.state.newEmail
+        });
+
+        this.props.history.push("/");
+      } else {
+        alert("Incorrect email entered, please try again.");
+      }
     } catch (e) {
       alert(e.message);
     }
     this.setState({ isLoading: false });
+  }
+
+  confirmCurrentEmail(inputEmail, userAccountEmail) {
+    return inputEmail === userAccountEmail;
   }
 
   validateEmailUpdateForm() {
