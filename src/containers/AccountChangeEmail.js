@@ -6,6 +6,7 @@ import {
 } from "react-bootstrap";
 import { Auth } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
+import "./AccountChangeEmail.css";
 
 
 export default class AccountChangeEmail extends Component {
