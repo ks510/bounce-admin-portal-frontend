@@ -31,14 +31,20 @@ export default class AccountChangeEmail extends Component {
     });
   }
 
-checkCodeSent = async event => {
-    event.preventDefault();
-    const userInfo = await Auth.currentUserInfo();
-    const verified = userInfo.attributes.email_verified;
-    console.log(`${userInfo.attributes.email} is ${verified}`);
-    console.log("Email verified: " + verified);
-
-    return !verified;
+/**
+  * Allows user to revisit change email page later and still be able to verify.
+  */
+  async componentDidMount() {
+    try {
+      const userInfo = await Auth.currentUserInfo();
+      const verified = userInfo.attributes.email_verified;
+      console.log(`${userInfo.attributes.email} is ${verified}`);
+      console.log("Email verified: " + verified);
+      this.setState({ codeSent: !verified });
+    }
+    catch(e) {
+      alert(e.message);
+    }
   }
 
   /**
@@ -112,7 +118,8 @@ checkCodeSent = async event => {
       <div className="EmailUpdateForm">
         <form onSubmit={this.handleEmailUpdateSubmit}>
           <h3>Update your email.</h3>
-          <p>Please confirm your current email and enter your new email below.</p>
+          <p>Please confirm your current email and enter your new email below.
+          A confirmation code will be sent to your new email to verify.</p>
           <FormGroup controlId="currentEmail" bsSize="large">
             <ControlLabel>Current Email</ControlLabel>
             <FormControl
@@ -158,7 +165,8 @@ checkCodeSent = async event => {
               value={this.state.confirmationCode}
               onChange={this.handleChange}
             />
-            <HelpBlock>Please check your email for the code.</HelpBlock>
+            <HelpBlock>Please check your email for your code. Make sure to
+            check your junk/spam folder as well.</HelpBlock>
           </FormGroup>
           <LoaderButton
             block
