@@ -126,7 +126,7 @@ export default class ForgotPassword extends Component {
             block
             bsSize="large"
             disabled={!this.validateResetPasswordForm()}
-            type="verify"
+            type="submit"
             isLoading={this.state.isLoading}
             text="Change Password"
             loadingText="Changing Password.."
@@ -168,7 +168,4 @@ export default class ForgotPassword extends Component {
     );
   }
 
-  //TODO: render form for resetting password
-  // Email field, confirmation code will be sent by email to start the procecs
-  // change password by confirming with code and new password
 }

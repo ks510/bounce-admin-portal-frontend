@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  HelpBlock,
   FormGroup,
   FormControl,
   ControlLabel
@@ -16,14 +17,28 @@ export default class AccountChangeEmail extends Component {
     this.state = {
       currentEmail: "",
       newEmail: "",
+      confirmationCode: "",
+      codeSent: false,
       isLoading: false
     };
+
+    console.log(this.state.codeSent);
   }
 
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
     });
+  }
+
+checkCodeSent = async event => {
+    event.preventDefault();
+    const userInfo = await Auth.currentUserInfo();
+    const verified = userInfo.attributes.email_verified;
+    console.log(`${userInfo.attributes.email} is ${verified}`);
+    console.log("Email verified: " + verified);
+
+    return !verified;
   }
 
   /**
@@ -42,11 +57,25 @@ export default class AccountChangeEmail extends Component {
         await Auth.updateUserAttributes(user, {
           "email": this.state.newEmail
         });
-
-        this.props.history.push("/");
+        this.setState({ codeSent: true });
       } else {
         alert("Incorrect email entered, please try again.");
       }
+    } catch (e) {
+      alert(e.message);
+    }
+    this.setState({ isLoading: false });
+  }
+
+  handleEmailConfirmation = async event => {
+    event.preventDefault();
+
+    this.setState({ isLoading: true });
+
+    try {
+      await Auth.verifyCurrentUserAttributeSubmit("email", this.state.confirmationCode);
+      this.setState({ codeSent: false });
+      this.props.history.push("/");
     } catch (e) {
       alert(e.message);
     }
@@ -64,9 +93,23 @@ export default class AccountChangeEmail extends Component {
     );
   }
 
+  validateConfirmationForm() {
+    return this.state.confirmationCode > 0;
+  }
+
   render() {
     return (
       <div className="AccountChangeEmail">
+      {this.state.codeSent
+        ? this.renderConfirmationForm()
+        : this.renderEmailUpdateForm() }
+      </div>
+    )
+  }
+
+  renderEmailUpdateForm() {
+    return (
+      <div className="EmailUpdateForm">
         <form onSubmit={this.handleEmailUpdateSubmit}>
           <h3>Update your email.</h3>
           <p>Please confirm your current email and enter your new email below.</p>
@@ -100,4 +143,35 @@ export default class AccountChangeEmail extends Component {
       </div>
     );
   }
+
+  renderConfirmationForm() {
+    return (
+      <div className="ConfirmationForm">
+        <form onSubmit={this.handleEmailConfirmation}>
+          <h3>Confirm your new email.</h3>
+          <p>Please enter the confirmation code to verify your new email.</p>
+          <FormGroup controlId="confirmationCode" bsSize="large">
+            <ControlLabel>Confirmation Code</ControlLabel>
+            <FormControl
+              autoFocus
+              type="tel"
+              value={this.state.confirmationCode}
+              onChange={this.handleChange}
+            />
+            <HelpBlock>Please check your email for the code.</HelpBlock>
+          </FormGroup>
+          <LoaderButton
+            block
+            bsSize="large"
+            disabled={!this.validateConfirmationForm()}
+            type="submit"
+            isLoading={this.state.isLoading}
+            text="Verify email"
+            loadingText="Verifying..."
+          />
+        </form>
+      </div>
+    );
+  }
+
 }
