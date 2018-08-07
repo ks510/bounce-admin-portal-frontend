@@ -19,7 +19,9 @@ export default class ForgotPassword extends Component {
       password: "",
       confirmPassword: "",
       codeSent: false,
-      isLoading: false
+      isLoading: false,
+      resentCode: false,
+      resendIsLoading: false
     };
   }
 
@@ -61,6 +63,21 @@ export default class ForgotPassword extends Component {
       alert(e.message);
     }
     this.setState({ isLoading: false });
+  }
+
+  resendConfirmationCode = async event => {
+
+    this.setState({ resendIsLoading: true });
+    try {
+      await Auth.forgotPassword(this.state.email);
+      this.setState({ resentCode: true });
+
+    } catch (e) {
+      alert(e.message);
+    }
+    this.setState({ resendIsLoading: false });
+
+
   }
 
   /**
@@ -132,6 +149,18 @@ export default class ForgotPassword extends Component {
             loadingText="Changing Password.."
           />
         </form>
+        <div className="ResendButton">
+          {this.state.resentCode
+            ? <HelpBlock>A new confirmation code has been sent to your email address.</HelpBlock>
+            : <LoaderButton
+                block
+                onClick={this.resendConfirmationCode}
+                disabled={this.state.resentCode}
+                isLoading={this.state.resendIsLoading}
+                type="submit"
+                text="Not received the email?"
+                loadingText="Resending code..." />}
+        </div>
       </div>
     );
   }

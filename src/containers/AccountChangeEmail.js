@@ -112,7 +112,6 @@ export default class AccountChangeEmail extends Component {
     }
     this.setState({ resendIsLoading: false });
 
-
   }
 
   confirmCurrentEmail(inputEmail, userAccountEmail) {
