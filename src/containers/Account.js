@@ -13,7 +13,7 @@ export default class Account extends Component {
       lastName: "",
       companyName: "",
       email: "",
-      password: "***************",
+      password: "*************",
       activeSubscription: false,
       billsByEmail: false,
     }
@@ -51,6 +51,7 @@ export default class Account extends Component {
       </div>
     );
   }
+
   renderAccountDetails(userDetails) {
     const attributeNames = {
       firstName: "First Name",
@@ -71,6 +72,10 @@ export default class Account extends Component {
     );
   }
 
+  /**
+    * Handles rendering each user info entry correctly with/without buttons or
+    * checkboxes.
+    */
   renderAccountDetailsSwitch(key, attributeNames, userDetails) {
     switch (key) {
       case 'email':
@@ -79,6 +84,7 @@ export default class Account extends Component {
                 {this.getAttributeWithValue(attributeNames[key], userDetails[key])}
                 <LinkButton
                   inline="true"
+                  bsSize="small"
                   href="/account/changeemail"
                   text="Change"
                 />
@@ -89,6 +95,7 @@ export default class Account extends Component {
                 {this.getAttributeWithValue(attributeNames[key], userDetails[key])}
                 <LinkButton
                   inline="true"
+                  bsSize="small"
                   href="/account/changepassword"
                   text="Change"
                 />
@@ -122,6 +129,9 @@ export default class Account extends Component {
     }
   }
 
+  /**
+   * Formats each entry for displaying attribute name and user information.
+   */
   getAttributeWithValue(attributeName, userInfo) {
     if (attributeName === "Email") {
       userInfo = this.hideEmail(userInfo);
@@ -129,18 +139,20 @@ export default class Account extends Component {
     if (attributeName === "Email" || attributeName === "Password") {
       userInfo = userInfo.concat(" ");
     }
+    if (userInfo === undefined) {
+      userInfo = '';
+    }
     return `${attributeName}: ${userInfo}`;
 
   }
 
   /**
     * Partially hides user's email address by only revealing the first 4
-    * characters and the @ symbol
+    * characters, the @ and . symbols and the remaining characters after .
     */
   hideEmail(email) {
     let endOfDomainNameReached = false;
     const charArray = email.split('');
-    console.log(charArray);
     charArray.forEach(function(character, index) {
       if (index > 3 && character !== '@' && character !== '.' && !endOfDomainNameReached) {
         charArray[index] = '*';
@@ -149,7 +161,6 @@ export default class Account extends Component {
       }
     });
     const hiddenEmail = charArray.join("");
-    console.log(hiddenEmail);
     return hiddenEmail;
   }
 
