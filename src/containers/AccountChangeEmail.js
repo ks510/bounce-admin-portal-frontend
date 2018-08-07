@@ -19,7 +19,9 @@ export default class AccountChangeEmail extends Component {
       newEmail: "",
       confirmationCode: "",
       codeSent: false,
-      isLoading: false
+      isLoading: false,
+      resentCode: false,
+      resendIsLoading: false
     };
 
     console.log(this.state.codeSent);
@@ -86,6 +88,31 @@ export default class AccountChangeEmail extends Component {
       alert(e.message);
     }
     this.setState({ isLoading: false });
+  }
+
+  resendConfirmationCode = async event => {
+
+    this.setState({ resendIsLoading: true });
+    try {
+      const userInfo = await Auth.currentUserInfo();
+      const user = await Auth.currentAuthenticatedUser();
+      // Auth doesn't have resend confirmation code method for attributes
+      // Therefore, update user's email to a non-existent email and then update
+      // again with their new email to trigger a new confirmation email.
+      await Auth.updateUserAttributes(user, {
+        "email": "dummyplaceholder@bouncebot.io"
+      });
+      await Auth.updateUserAttributes(user, {
+        "email": userInfo.attributes.email
+      });
+
+      this.setState({ resentCode: true });
+    } catch (e) {
+      alert(e.message);
+    }
+    this.setState({ resendIsLoading: false });
+
+
   }
 
   confirmCurrentEmail(inputEmail, userAccountEmail) {
@@ -178,8 +205,25 @@ export default class AccountChangeEmail extends Component {
             loadingText="Verifying..."
           />
         </form>
+        <div className="ResendButton">
+          {this.state.resentCode
+            ? <HelpBlock>A new confirmation code has been sent to your new email address.</HelpBlock>
+            : <LoaderButton
+                block
+                onClick={this.resendConfirmationCode}
+                disabled={this.state.resentCode}
+                isLoading={this.state.resendIsLoading}
+                type="submit"
+                text="Not received the email?"
+                loadingText="Resending code..." />}
+        </div>
+
       </div>
     );
+  }
+
+  handleClick = async event => {
+    alert("Clicked");
   }
 
 }
