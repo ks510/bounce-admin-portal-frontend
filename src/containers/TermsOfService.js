@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ReactRemarkable from "react-remarkable";
-import markdownFile from "../terms-of-service/Bounce - Terms of Service.md";
 import "./PolicyPages.css";
 import { Base64 } from 'js-base64';
 

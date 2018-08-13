@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ReactRemarkable from "react-remarkable";
-import markdownFile from "../privacy-policy/Bounce - Privacy Policy.md";
 import "./PolicyPages.css";
 import { Base64 } from 'js-base64';
 
@@ -14,7 +13,7 @@ export default class PrivacyPolicy extends Component {
   }
 
   async componentWillMount() {
-
+    
     try {
       // GET request for github file, contents of response is encoded in base64
       // do not use window.atob() as it doesn't decode properly!
