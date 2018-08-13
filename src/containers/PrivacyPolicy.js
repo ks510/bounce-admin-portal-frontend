@@ -2,11 +2,8 @@ import React, { Component } from "react";
 import ReactRemarkable from "react-remarkable";
 import markdownFile from "../privacy-policy/Bounce - Privacy Policy.md";
 import "./PolicyPages.css";
+import { Base64 } from 'js-base64';
 
-
-/**
- * Placeholder for display Bounce's privacy policy for users to view.
- */
 export default class PrivacyPolicy extends Component {
   constructor(props) {
     super(props);
@@ -17,10 +14,16 @@ export default class PrivacyPolicy extends Component {
   }
 
   async componentWillMount() {
+
     try {
-      const response = await fetch(markdownFile);
-      const markdownText = await response.text();
-      this.setState({ markdown: markdownText });
+      // GET request for github file, contents of response is encoded in base64
+      // do not use window.atob() as it doesn't decode properly!
+      const response = await fetch("https://api.github.com/repos/bouncetechnologies/privacy-policy/contents/Bounce%20-%20Privacy%20Policy.md");
+      const responseObjectAsText = await response.text()
+      const jsonObject = JSON.parse(responseObjectAsText);
+      const decodedText = Base64.decode(jsonObject["content"]);
+
+      this.setState({ markdown: decodedText });
 
     } catch (e) {
       alert(e);
