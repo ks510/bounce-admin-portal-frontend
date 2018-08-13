@@ -17,13 +17,15 @@ export default class PrivacyPolicy extends Component {
   }
 
 
-  componentWillMount() {
-    // load the text from file and store it in component state
-    fetch(markdownFile)
-      .then((r) => r.text())
-      .then(text  => {
-        this.setState({ markdown: text });
-      })
+  async componentWillMount() {
+    try {
+      const response = await fetch(markdownFile);
+      const markdownText = await response.text();
+      this.setState({ markdown: markdownText });
+
+    } catch (e) {
+      alert(e);
+    }
   }
 
   render() {
