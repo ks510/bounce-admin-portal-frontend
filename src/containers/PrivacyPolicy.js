@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import marked from "marked";
-import ReactMarkdown from "react-markdown";
+import ReactRemarkable from "react-remarkable";
 import markdownFile from "../privacy-policy/Bounce - Privacy Policy.md";
+import "./PolicyPages.css";
 
 
 /**
@@ -27,7 +27,7 @@ export default class PrivacyPolicy extends Component {
   render() {
     return (
       <div className="privacy-policy">
-        <ReactMarkdown source={this.state.markdown} />
+        <ReactRemarkable source={this.state.markdown} />
       </div>
     );
   }
