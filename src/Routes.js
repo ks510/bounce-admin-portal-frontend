@@ -24,8 +24,8 @@ export default ({ childProps }) =>
     <UnauthenticatedRoute path="/login" exact component={Login} props={childProps} />
     <UnauthenticatedRoute path="/signup" exact component={Signup} props={childProps} />
     <UnauthenticatedRoute path="/forgotpassword" exact component={ForgotPassword} props={childProps} />
-    <UnauthenticatedRoute path="/termsofservice" exact component={TermsOfService} props={childProps} />
-    <UnauthenticatedRoute path="/privacypolicy" exact component={PrivacyPolicy} props={childProps} />
+    <Route path="/termsofservice" exact component={TermsOfService} props={childProps} />
+    <Route path="/privacypolicy" exact component={PrivacyPolicy} props={childProps} />
     <AuthenticatedRoute path="/subscriptionpayment" exact component={SubscriptionPayment} props={childProps} />
     <AuthenticatedRoute path="/notes/new" exact component={NewNote} props={childProps} />
     <AuthenticatedRoute path="/notes/:id" exact component={Notes} props={childProps} />
