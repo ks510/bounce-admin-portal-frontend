@@ -1,3 +1,17 @@
+@media (min-width: 768px) {
+  .App .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+
+}
+
+.App .navbar-collapse {
+  font-style: bold;
+  font-weight: 900;
+  font-size: 14px;
+  color: #3B4045;
+}
+
 .App {
   margin-top: 5px;
 }
@@ -6,21 +20,21 @@
   background-color: #FFFFFF;
   border: none;
   font-family: 'Quicksand', sans-serif;
-
 }
 
-.App .navbar-collapse {
-  font-style: bold;
-  font-weight: 900;
-  font-size: 18px;
-  color: #3B4045;
-
+.App .navbar-header {
+  text-align: center;
 }
+
+.App .navbar-nav {
+  text-align: right;
+}
+
 
 .App .navbar-brand, .App .navbar-brand:hover, .App .navbar-brand:active, .App .navbar-brand:visited {
   font-style: bold;
   font-weight: 900;
-  font-size: 26px;
+  font-size: 24px;
   color: #56CA9C;
 
 }

@@ -26,10 +26,10 @@ export default ({ childProps }) =>
     <UnauthenticatedRoute path="/forgotpassword" exact component={ForgotPassword} props={childProps} />
     <Route path="/termsofservice" exact component={TermsOfService} props={childProps} />
     <Route path="/privacypolicy" exact component={PrivacyPolicy} props={childProps} />
-    <AuthenticatedRoute path="/subscriptionpayment" exact component={SubscriptionPayment} props={childProps} />
+    <AuthenticatedRoute path="/subscription/payment" exact component={SubscriptionPayment} props={childProps} />
     <AuthenticatedRoute path="/notes/new" exact component={NewNote} props={childProps} />
     <AuthenticatedRoute path="/notes/:id" exact component={Notes} props={childProps} />
-    <AuthenticatedRoute path="/account" exact component={Account} props={childProps} />
+    <AuthenticatedRoute path="/account/details" exact component={Account} props={childProps} />
     <AuthenticatedRoute path="/account/changepassword" exact component={AccountChangePassword} props={childProps} />
     <AuthenticatedRoute path="/account/changeemail" exact component={AccountChangeEmail} props={childProps} />
     <AuthenticatedRoute path="/resetpasswordsuccess" exact component={ResetPasswordSuccess} props={childProps} />

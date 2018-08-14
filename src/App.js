@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Auth } from "aws-amplify";
 import { Link, withRouter } from "react-router-dom";
-import { Nav, Navbar, NavItem } from "react-bootstrap";
+import { Nav, Navbar, NavItem, NavDropdown, MenuItem, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import Routes from "./Routes";
 import "./App.css";
@@ -57,32 +57,75 @@ class App extends Component {
             <Navbar.Brand>
               <Link to="/">Bounce for Teams</Link>
             </Navbar.Brand>
-            <Navbar.Toggle />
+            {this.state.isAuthenticated
+              ? <Nav pullRight>
+                  <NavItem onClick={this.handleLogout}>Log Out</NavItem>
+                </Nav>
+              : <Nav />}
           </Navbar.Header>
-          <Navbar.Collapse>
-            <Nav pullRight>
+        </Navbar>
+          <Navbar fluid collapseOnSelect>
+            <Navbar.Header>
+              <Navbar.Toggle />
+            </Navbar.Header>
+            <Navbar.Collapse>
               {this.state.isAuthenticated
-                ? <Fragment>
-                    <LinkContainer to="/subscriptionpayment">
-                      <NavItem>Subscribe</NavItem>
+                ? <div className="authenticated-navbar">
+                  <Nav>
+                    <LinkContainer to="/subscription">
+                      <NavDropdown
+                        title="Manage Subscription"
+                        id="subscription-navdropdown" >
+                        <LinkContainer to="/subscription/usage">
+                          <MenuItem>Current Usage</MenuItem>
+                        </LinkContainer>
+                        <LinkContainer to="/subscription/payment">
+                          <MenuItem>Purchase Subscription</MenuItem>
+                        </LinkContainer>
+                        <LinkContainer to="/subscription/paymentmethods">
+                          <MenuItem>Manage Payment Methods</MenuItem>
+                        </LinkContainer>
+                        <LinkContainer to="/subscription/bills">
+                          <MenuItem>Previous Bills</MenuItem>
+                        </LinkContainer>
+                      </NavDropdown>
+                    </LinkContainer>
+                    <LinkContainer to="/employees">
+                      <NavItem>Manage Employees</NavItem>
                     </LinkContainer>
                     <LinkContainer to="/account">
-                      <NavItem>Account</NavItem>
+                      <NavDropdown
+                        title="Account Settings"
+                        id="account-navdropdown" >
+                        <LinkContainer to="/account/details">
+                          <MenuItem>Account Details</MenuItem>
+                        </LinkContainer>
+                        <LinkContainer to="/account/changepassword">
+                          <MenuItem>Change your password</MenuItem>
+                        </LinkContainer>
+                        <LinkContainer to="/account/changeemail">
+                          <MenuItem>Change your email</MenuItem>
+                        </LinkContainer>
+                      </NavDropdown>
                     </LinkContainer>
-                    <NavItem onClick={this.handleLogout}>Log Out</NavItem>
-                  </Fragment>
-                : <Fragment>
+                    <LinkContainer to="/advice">
+                      <NavItem>Help & Support</NavItem>
+                    </LinkContainer>
+                  </Nav>
+                  </div>
+                : <Nav>
                     <LinkContainer to="/signup">
                       <NavItem>Sign Up</NavItem>
                     </LinkContainer>
                     <LinkContainer to="/login">
                       <NavItem>Log In</NavItem>
                     </LinkContainer>
-                  </Fragment>
+                  </Nav>
               }
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
+            </Navbar.Collapse>
+
+          </Navbar>
+
         <Routes childProps={childProps} />
       </div>
     );
