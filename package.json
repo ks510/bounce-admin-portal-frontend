@@ -16,10 +16,9 @@
     "react-stripe-elements": "^2.0.1"
   },
   "scripts": {
-    "start": "npm run update-policies && react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "update-policies": "rm -rf src/privacy-policy && rm -rf src/terms-of-service && git clone https://github.com/bouncetechnologies/privacy-policy src/privacy-policy && rm -rf src/privacy-policy/.git && git clone https://github.com/bouncetechnologies/terms-of-service src/terms-of-service && rm -rf src/terms-of-service/.git"
+    "test": "react-scripts tetst --env=jsdom",
+    "eject": "react-scripts eject"
   }
 }
