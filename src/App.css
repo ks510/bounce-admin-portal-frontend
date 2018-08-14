@@ -10,6 +10,7 @@
   font-weight: 900;
   font-size: 14px;
   color: #3B4045;
+  text-align: right;
 }
 
 .App {
@@ -23,12 +24,9 @@
 }
 
 .App .navbar-header {
-  text-align: center;
-}
-
-.App .navbar-nav {
   text-align: right;
 }
+
 
 
 .App .navbar-brand, .App .navbar-brand:hover, .App .navbar-brand:active, .App .navbar-brand:visited {
