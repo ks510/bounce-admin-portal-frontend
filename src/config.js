@@ -10,8 +10,8 @@ const dev = {
   },
   cognito: {
     REGION: "eu-west-2",
-    USER_POOL_ID: "eu-west-2_bBU9QhUi2",
-    APP_CLIENT_ID: "1h53s87ig29vu7ikqff42nvcto",
+    USER_POOL_ID: "eu-west-2_TnsiF2nVe",
+    APP_CLIENT_ID: "40sqn5t6kgl31pqg8lkvj9eep2",
     IDENTITY_POOL_ID: "eu-west-2:6f32ac80-cd30-491b-99c9-b181f56eb8bb"
   }
 
