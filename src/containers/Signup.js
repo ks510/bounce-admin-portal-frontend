@@ -103,7 +103,8 @@ export default class Signup extends Component {
           'email': this.state.email,
           'given_name': this.state.firstName,
           'family_name': this.state.lastName,
-          'custom:company_name': this.state.companyName
+          'custom:company_name': this.state.companyName,
+          'custom:customer_ID': ''
         }
       });
       this.setState({
