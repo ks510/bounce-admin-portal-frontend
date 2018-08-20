@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
 import "./Signup.css";
+import { API } from "aws-amplify";
 
 /**
  * Two-page Sign Up with verification by code for Bounce Portal
@@ -133,6 +134,16 @@ export default class Signup extends Component {
       await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
       await Auth.signIn(this.state.email, this.state.password);
 
+      // create a new customer for this account in Stripe
+      const stripeCustomer = await this.createStripeCustomer({
+        email: this.state.email
+      })
+      // store the unique stripe customer ID in Cognito
+      const user = await Auth.currentAuthenticatedUser();
+      await Auth.updateUserAttributes(user, {
+        "custom:customer_ID": stripeCustomer.customerID
+      });
+
       this.props.userHasAuthenticated(true);
       this.props.history.push("/");
     } catch (e) {
@@ -140,6 +151,13 @@ export default class Signup extends Component {
       this.setState({ isLoading: false });
     }
   }
+
+  createStripeCustomer(email) {
+    return API.post("notes", "/createCustomer", {
+      body: email
+    });
+  }
+
 
   /**
   * Renders verification page for user to input confirmation code from their email
