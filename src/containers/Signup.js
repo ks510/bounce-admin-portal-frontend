@@ -137,8 +137,7 @@ export default class Signup extends Component {
       // create a new customer for this account in Stripe
       const stripeCustomer = await this.createStripeCustomer({
         email: this.state.email
-      })
-      console.log(stripeCustomer.customerID);
+      });
       // store the unique stripe customer ID in Cognito
       const user = await Auth.currentAuthenticatedUser();
       await Auth.updateUserAttributes(user, {
