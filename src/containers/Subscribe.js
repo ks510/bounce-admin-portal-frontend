@@ -4,6 +4,8 @@ import { Elements, StripeProvider } from "react-stripe-elements";
 import BillingForm from "../components/BillingForm";
 import config from "../config";
 import "./TestPaymentForm.css";
+import { Button, Checkbox } from 'react-bootstrap';
+import LoaderButton from "../components/LoaderButton";
 
 export default class Subscribe extends Component {
   constructor(props) {
@@ -11,7 +13,9 @@ export default class Subscribe extends Component {
 
     this.state = {
       isLoading: false,
-      subscribed: false
+      subscribed: false,
+      confirmCancel: false,
+      customerObj: null
     };
   }
 
@@ -23,9 +27,11 @@ export default class Subscribe extends Component {
       console.log(customer);
       // get customer object from stripe
       const customerObj = await this.getCustomer({customer});
-      // check if customer has any active subscriptions
-      console.log(customerObj);
-      
+      this.setState({ customerObj: customerObj })
+      if (customerObj.subscriptions.data.length > 0) {
+        this.setState({ subscribed: true });
+      }
+
     } catch (e) {
       alert(e.message);
     }
@@ -46,6 +52,12 @@ export default class Subscribe extends Component {
   subscribe(details) {
     return API.post("notes", "/subscribe", {
       body: details
+    });
+  }
+
+  handleChangeCheckbox = event => {
+    this.setState({
+      [event.target.id]: event.target.checked
     });
   }
 
@@ -84,6 +96,9 @@ export default class Subscribe extends Component {
     }
   }
 
+  handleCancelSubscription = async () => {
+    console.log("cancelled");
+  }
 
   renderPaymentForm() {
     return (
@@ -100,9 +115,30 @@ export default class Subscribe extends Component {
     );
   }
 
+
   renderSubscribed() {
     return (
-      <h3>Already subscribed.</h3>
+      <div className="Subscribed">
+        <form onSubmit={this.handleCancelSubscription}>
+          <h3>Already subscribed.</h3>
+          <Checkbox
+            id="confirmCancel"
+            checked={this.state.confirmCancel}
+            onChange={this.handleChangeCheckbox}
+            title="confirmCancel">
+            I confirm that I want to cancel my Bounce subscription immediately.
+          </Checkbox>
+          <LoaderButton
+            block
+            bsSize="large"
+            disabled={!this.state.confirmCancel}
+            type="submit"
+            isLoading={this.state.isLoading}
+            text="Cancel my subscription"
+            loadingText="Cancelling"
+          />
+        </form>
+      </div>
     );
   }
 
