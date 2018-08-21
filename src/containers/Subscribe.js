@@ -26,7 +26,7 @@ export default class Subscribe extends Component {
     });
   }
 
-  handleFormSubmit = async (storage, { token, error }) => {
+  handleFormSubmit = async ({ token, error }) => {
     if (error) {
       alert(error);
       return;

@@ -10,7 +10,6 @@ class BillingForm extends Component {
 
     this.state = {
       name: "",
-      storage: "",
       isProcessing: false,
       isCardComplete: false
     };
@@ -19,7 +18,6 @@ class BillingForm extends Component {
   validateForm() {
     return (
       this.state.name !== "" &&
-      this.state.storage !== "" &&
       this.state.isCardComplete
     );
   }
@@ -47,7 +45,7 @@ class BillingForm extends Component {
 
     this.setState({ isProcessing: false });
 
-    this.props.onSubmit(this.state.storage, { token, error });
+    this.props.onSubmit({ token, error });
   }
 
   render() {
@@ -55,16 +53,6 @@ class BillingForm extends Component {
 
     return (
       <form className="BillingForm" onSubmit={this.handleSubmitClick}>
-        <FormGroup bsSize="large" controlId="storage">
-          <ControlLabel>Storage</ControlLabel>
-          <FormControl
-            min="0"
-            type="number"
-            value={this.state.storage}
-            onChange={this.handleFieldChange}
-            placeholder="Number of notes to store"
-          />
-        </FormGroup>
         <hr />
         <FormGroup bsSize="large" controlId="name">
           <ControlLabel>Cardholder&apos;s name</ControlLabel>
