@@ -10,8 +10,31 @@ export default class Subscribe extends Component {
     super(props);
 
     this.state = {
-      isLoading: false
+      isLoading: false,
+      subscribed: false
     };
+  }
+
+  async componentWillMount() {
+    try {
+      // get customer stripe ID from cognito
+      const userInfo = await Auth.currentUserInfo();
+      const customer = userInfo.attributes["custom:customer_ID"];
+      console.log(customer);
+      // get customer object from stripe
+      const customerObj = await this.getCustomer({customer});
+      // check if customer has any active subscriptions
+      console.log(customerObj);
+      
+    } catch (e) {
+      alert(e.message);
+    }
+  }
+
+  getCustomer(details) {
+    return API.post("notes", "/getCustomer", {
+      body: details
+    })
   }
 
   addPaymentMethod(details) {
@@ -62,7 +85,7 @@ export default class Subscribe extends Component {
   }
 
 
-  render() {
+  renderPaymentForm() {
     return (
       <div className="SubscriptionPayment">
         <StripeProvider apiKey={config.STRIPE_KEY}>
@@ -73,6 +96,20 @@ export default class Subscribe extends Component {
             />
           </Elements>
         </StripeProvider>
+      </div>
+    );
+  }
+
+  renderSubscribed() {
+    return (
+      <h3>Already subscribed.</h3>
+    );
+  }
+
+  render() {
+    return (
+      <div className="Purchase Subscription">
+        {this.state.subscribed ? this.renderSubscribed() : this.renderPaymentForm()}
       </div>
     );
   }
