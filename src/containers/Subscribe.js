@@ -129,6 +129,31 @@ export default class Subscribe extends Component {
 
   }
 
+  reactivateSubscription(details) {
+    return API.post("notes", "/reactivateSubscription", {
+      body: details
+    });
+  }
+
+  handleReactivateSubscription = async () => {
+    this.setState({ isLoading: true });
+
+    // get subscription id to reactivate from customer object
+    const subscription = this.state.customerObj.subscriptions.data[0].id;
+    console.log(`Reactivating subscription: ${subscription}`);
+    try {
+      // reactivate subscription on stripe by updating subscription attribute
+      await this.reactivateSubscription({ subscription });
+      console.log(`Reactivated your bounce subscription: ${subscription}`);
+      this.setState({ cancelled: false });
+
+    } catch (e) {
+      alert(e.message);
+    }
+
+    this.setState({ isLoading: false });
+  }
+
   renderPaymentForm() {
     return (
       <div className="SubscriptionPayment">
