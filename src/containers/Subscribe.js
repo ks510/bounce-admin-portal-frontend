@@ -4,7 +4,7 @@ import { Elements, StripeProvider } from "react-stripe-elements";
 import BillingForm from "../components/BillingForm";
 import config from "../config";
 import "./TestPaymentForm.css";
-import { Button, Checkbox } from 'react-bootstrap';
+import { Checkbox } from 'react-bootstrap';
 import LoaderButton from "../components/LoaderButton";
 
 export default class Subscribe extends Component {
@@ -97,7 +97,16 @@ export default class Subscribe extends Component {
   }
 
   handleCancelSubscription = async () => {
-    console.log("cancelled");
+    // get subscription id to cancel from customer object
+    const subscription = this.state.customerObj.subscriptions.data[0].id;
+    alert(`Subscription cancelled: ${subscription}`);
+
+    try {
+      // call cancel subscription API
+    } catch (e) {
+      alert(e.message);
+    }
+
   }
 
   renderPaymentForm() {
