@@ -9,7 +9,7 @@ import NotFound from "./containers/NotFound";
 import AppliedRoute from "./components/AppliedRoute";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
-import SubscriptionPayment from "./containers/SubscriptionPayment";
+import TestPaymentForm from "./containers/TestPaymentForm";
 import ForgotPassword from "./containers/ForgotPassword";
 import TermsOfService from "./containers/TermsOfService";
 import PrivacyPolicy from "./containers/PrivacyPolicy";
@@ -17,6 +17,7 @@ import ResetPasswordSuccess from "./containers/ResetPasswordSuccess";
 import Account from "./containers/Account";
 import AccountChangePassword from "./containers/AccountChangePassword";
 import AccountChangeEmail from "./containers/AccountChangeEmail";
+import Subscribe from "./containers/Subscribe";
 
 export default ({ childProps }) =>
   <Switch>
@@ -26,7 +27,8 @@ export default ({ childProps }) =>
     <UnauthenticatedRoute path="/forgotpassword" exact component={ForgotPassword} props={childProps} />
     <Route path="/termsofservice" exact component={TermsOfService} props={childProps} />
     <Route path="/privacypolicy" exact component={PrivacyPolicy} props={childProps} />
-    <AuthenticatedRoute path="/subscription/payment" exact component={SubscriptionPayment} props={childProps} />
+    <AuthenticatedRoute path="/subscription/subscribe" exact component={Subscribe} props={childProps} />
+    <AuthenticatedRoute path="/subscription/testpaymentform" exact component={TestPaymentForm} props={childProps} />
     <AuthenticatedRoute path="/notes/new" exact component={NewNote} props={childProps} />
     <AuthenticatedRoute path="/notes/:id" exact component={Notes} props={childProps} />
     <AuthenticatedRoute path="/account/details" exact component={Account} props={childProps} />

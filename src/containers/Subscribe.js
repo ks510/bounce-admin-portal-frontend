@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { API } from "aws-amplify";
+import { API, Auth } from "aws-amplify";
 import { Elements, StripeProvider } from "react-stripe-elements";
 import BillingForm from "../components/BillingForm";
 import config from "../config";
-import "./SubscriptionPayment.css";
+import "./TestPaymentForm.css";
 
 export default class Subscribe extends Component {
   constructor(props) {
@@ -14,8 +14,14 @@ export default class Subscribe extends Component {
     };
   }
 
-  billUser(details) {
-    return API.post("notes", "/billing", {
+  addPaymentMethod(details) {
+    return API.post("notes", "/addDefaultPaymentMethod", {
+      body: details
+    });
+  }
+
+  subscribe(details) {
+    return API.post("notes", "/subscribe", {
       body: details
     });
   }
@@ -31,14 +37,22 @@ export default class Subscribe extends Component {
     try {
       // get customer stripe ID from cognito
       const userInfo = await Auth.currentUserInfo();
-      const verified = userInfo.attributes.email_verified;
-
-      await this.billUser({
-        storage,
+      const customerID = userInfo.attributes.customer_ID;
+      console.log(customerID);
+      // add customer payment method
+      await this.addPaymentMethod({
+        customerID,
         source: token.id
       });
+      // subscribe customer to monthly plan
+      // but how to know which plan ID to use? For now it is fixed to Bounce Premium
+      const planID = 'plan_DPt2YPYzphRe5S';
+      await this.subscribe({
+        customerID,
+        planID,
+      });
 
-      alert("Your card has been charged successfully!");
+      alert("You're subscribed to Bounce!");
       this.props.history.push("/");
     } catch (e) {
       alert(e);

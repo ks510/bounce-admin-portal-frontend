@@ -3,7 +3,7 @@ import { API } from "aws-amplify";
 import { Elements, StripeProvider } from "react-stripe-elements";
 import BillingForm from "../components/BillingForm";
 import config from "../config";
-import "./SubscriptionPayment.css";
+import "./TestPaymentForm.css";
 
 export default class SubscriptionPayment extends Component {
   constructor(props) {
