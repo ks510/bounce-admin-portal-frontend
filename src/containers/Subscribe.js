@@ -15,6 +15,8 @@ export default class Subscribe extends Component {
       isLoading: false,
       subscribed: false,
       confirmCancel: false,
+      confirmReactivate: false,
+      cancelled: false,
       customerObj: null
     };
   }
@@ -24,12 +26,18 @@ export default class Subscribe extends Component {
       // get customer stripe ID from cognito
       const userInfo = await Auth.currentUserInfo();
       const customer = userInfo.attributes["custom:customer_ID"];
-      console.log(customer);
-      // get customer object from stripe
+
+      // get customer object from stripe and store in component state
       const customerObj = await this.getCustomer({customer});
-      this.setState({ customerObj: customerObj })
+      this.setState({ customerObj: customerObj });
+
+      // check if the customer has an active bounce subscription
       if (customerObj.subscriptions.data.length > 0) {
         this.setState({ subscribed: true });
+      }
+      // check if customer has active subscirption to be cancelled at the end of billing period
+      if (customerObj.subscriptions.data[0].cancel_at_period_end) {
+        this.setState({ cancelled: true });
       }
 
     } catch (e) {
@@ -96,9 +104,19 @@ export default class Subscribe extends Component {
     }
   }
 
+  cancelSubscription(details) {
+    return API.post("notes", "/cancelSubscription", {
+      body: details
+    });
+  }
+
   handleCancelSubscription = async () => {
-    // get subscription id to cancel from customer object
+    this.setState({ isLoading: true });
+
+    // get subscription id to cancel from customer object and call API
     const subscription = this.state.customerObj.subscriptions.data[0].id;
+    await this.cancelSubscription({ subscription });
+    this.setState({ subscribed: false });
     alert(`Subscription cancelled: ${subscription}`);
 
     try {
@@ -106,6 +124,8 @@ export default class Subscribe extends Component {
     } catch (e) {
       alert(e.message);
     }
+
+    this.setState({ isLoading: false });
 
   }
 
@@ -124,29 +144,53 @@ export default class Subscribe extends Component {
     );
   }
 
-
+/**
+ * If the customer has an active subscription, render components based on whether
+ * subscription is pending cancellation at the end of the billing period. This
+ * enables users to reactivate the subscription if they change their mind.
+ **/
   renderSubscribed() {
     return (
       <div className="Subscribed">
-        <form onSubmit={this.handleCancelSubscription}>
-          <h3>Already subscribed.</h3>
-          <Checkbox
-            id="confirmCancel"
-            checked={this.state.confirmCancel}
-            onChange={this.handleChangeCheckbox}
-            title="confirmCancel">
-            I confirm that I want to cancel my Bounce subscription immediately.
-          </Checkbox>
-          <LoaderButton
-            block
-            bsSize="large"
-            disabled={!this.state.confirmCancel}
-            type="submit"
-            isLoading={this.state.isLoading}
-            text="Cancel my subscription"
-            loadingText="Cancelling"
-          />
-        </form>
+        <h3>Already subscribed.</h3>
+        {this.state.cancelled
+          ? <form onSubmit={this.handleReactivateSubscription}>
+              <p>Your subscription will be cancelled at the end of this billing period</p>
+              <Checkbox
+                id="confirmReactivate"
+                checked={this.state.confirmReactivate}
+                onChange={this.handleChangeCheckbox}
+                title="confirmReactivate">
+                I confirm that I want to stay subscribed to Bounce and no longer wish to cancel my subscription at the end of this billing period.
+              </Checkbox>
+              <LoaderButton
+                block
+                bsSize="large"
+                disabled={!this.state.confirmReactivate}
+                type="submit"
+                isLoading={this.state.isLoading}
+                text="Stay Subscribed"
+                loadingText="Resubscribing..."
+              />
+            </form>
+          : <form onSubmit={this.handleCancelSubscription}>
+              <Checkbox
+                id="confirmCancel"
+                checked={this.state.confirmCancel}
+                onChange={this.handleChangeCheckbox}
+                title="confirmCancel">
+                I confirm that I want to cancel my Bounce subscription immediately.
+              </Checkbox>
+              <LoaderButton
+                block
+                bsSize="large"
+                disabled={!this.state.confirmCancel}
+                type="submit"
+                isLoading={this.state.isLoading}
+                text="Cancel my subscription"
+                loadingText="Cancelling"
+              />
+            </form>}
       </div>
     );
   }
