@@ -15,7 +15,7 @@ export default class Subscribe extends Component {
   }
 
   addPaymentMethod(details) {
-    return API.post("notes", "/addDefaultPaymentMethod", {
+    return API.post("notes", "/updateDefaultPaymentMethod", {
       body: details
     });
   }
@@ -33,17 +33,18 @@ export default class Subscribe extends Component {
     }
 
     this.setState({ isLoading: true });
-
+    console.log("submitting payment info...");
     try {
       // get customer stripe ID from cognito
       const userInfo = await Auth.currentUserInfo();
-      const customerID = userInfo.attributes.customer_ID;
+      const customerID = userInfo.attributes["custom:customer_ID"];
       console.log(customerID);
       // add customer payment method
       await this.addPaymentMethod({
         customerID,
-        source: token.id
+        source: 'tok_gb'
       });
+
       // subscribe customer to monthly plan
       // but how to know which plan ID to use? For now it is fixed to Bounce Premium
       const planID = 'plan_DPt2YPYzphRe5S';
