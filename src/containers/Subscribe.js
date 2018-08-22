@@ -115,12 +115,12 @@ export default class Subscribe extends Component {
 
     // get subscription id to cancel from customer object and call API
     const subscription = this.state.customerObj.subscriptions.data[0].id;
-    await this.cancelSubscription({ subscription });
-    this.setState({ subscribed: false });
-    alert(`Subscription cancelled: ${subscription}`);
+    console.log(`Cancelling subscription: ${subscription}`);
 
     try {
-      // call cancel subscription API
+      await this.cancelSubscription({ subscription });
+      this.setState({ subscribed: false });
+      
     } catch (e) {
       alert(e.message);
     }
