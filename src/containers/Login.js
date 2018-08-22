@@ -5,6 +5,9 @@ import LoaderButton from "../components/LoaderButton";
 import "./Login.css";
 import { Link } from "react-router-dom";
 
+/**
+ * Contains the log in form for accessing the admin portal.
+ **/
 export default class Login extends Component {
   constructor(props) {
     super(props);
@@ -16,16 +19,25 @@ export default class Login extends Component {
     };
   }
 
+  /**
+   * Validates all fields in the log in form by checking they are filled in.
+   **/
   validateForm() {
     return this.state.email.length > 0 && this.state.password.length > 0;
   }
 
+  /**
+    * Updates the state of form text fields.
+    **/
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
     });
   }
 
+  /**
+   * Attempts to log in user with the email and password provided.
+   **/
   handleSubmit = async event => {
     event.preventDefault();
 
@@ -34,6 +46,7 @@ export default class Login extends Component {
     try {
       await Auth.signIn(this.state.email, this.state.password);
       this.props.userHasAuthenticated(true);
+
     } catch (e) {
       alert(e.message);
       this.setState({ isLoading: false });
