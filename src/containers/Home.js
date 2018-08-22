@@ -1,67 +1,18 @@
 import React, { Component } from "react";
-import { API } from "aws-amplify";
 import { Link } from "react-router-dom";
-import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
+import { PageHeader } from "react-bootstrap";
 import "./Home.css";
 
+/**
+ * Renders the home page components depending if the user is logged in or not.
+ **/
 export default class Home extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      isLoading: true,
-      notes: []
-    };
-  }
+  // Default constructor used as no state required in this component yet.
 
-  async componentDidMount() {
-    if (!this.props.isAuthenticated) {
-      return;
-    }
-
-    try {
-      const notes = await this.notes();
-      this.setState({ notes });
-    } catch (e) {
-      alert(e);
-    }
-
-    this.setState({ isLoading: false });
-  }
-
-  notes() {
-    return API.get("notes", "/notes");
-  }
-
-  handleNoteClick = event => {
-    event.preventDefault();
-    this.props.history.push(event.currentTarget.getAttribute("href"));
-  }
-
-  renderNotesList(notes) {
-    return [{}].concat(notes).map(
-      (note, i) =>
-        i !== 0
-          ? <ListGroupItem
-              key={note.noteId}
-              href={`/notes/${note.noteId}`}
-              onClick={this.handleNoteClick}
-              header={note.content.trim().split("\n")[0]}
-            >
-              {"Created: " + new Date(note.createdAt).toLocaleString()}
-            </ListGroupItem>
-          : <ListGroupItem
-              key="new"
-              href="/notes/new"
-              onClick={this.handleNoteClick}
-            >
-              <h4>
-                <b>{"\uFF0B"}</b> Create a new note
-              </h4>
-            </ListGroupItem>
-    );
-  }
-
+  /**
+   * Renders the home page for users that aren't logged in.
+   **/
   renderLander() {
     return (
       <div className="lander">
@@ -79,17 +30,23 @@ export default class Home extends Component {
     );
   }
 
+  /**
+   * Renders the management landing page if the user is logged in. This page
+   * should show statistics/information about employee's Bounce usage.
+   **/
   renderPortalLanding() {
     return (
-      <div className="notes">
-        <PageHeader>Your Notes</PageHeader>
-        <ListGroup>
-          {!this.state.isLoading && this.renderNotesList(this.state.notes)}
-        </ListGroup>
+      <div className="admin-portal-landing">
+        <PageHeader>Bounce Admin Portal</PageHeader>
+        <h3>Welcome back!</h3>
+        <p>Here are some Bounce usage statistics...</p>
       </div>
     );
   }
 
+  /**
+   * Decision on which landing page to render depending if the user is logged in.
+   **/
   render() {
     return (
       <div className="Home">
