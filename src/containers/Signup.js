@@ -59,18 +59,24 @@ export default class Signup extends Component {
   }
 
   /**
-  * Validates confirmation code field (non-empty)
+  * Validates confirmation code by checking it is filled in.
   */
   validateConfirmationForm() {
     return this.state.confirmationCode.length > 0;
   }
 
+  /**
+  * Updates the state of form text fields.
+  **/
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
     });
   }
 
+  /**
+  * Updates the state of the checkbox.
+  **/
   handleChangeCheckbox = event => {
     this.setState({
       [event.target.id]: event.target.checked
@@ -78,7 +84,7 @@ export default class Signup extends Component {
   }
 
   /**
-  * Updates the state of sign up progression
+  * Updates the state of sign up progression (after submitting page 1).
   */
   handleSubmitPageOne = async event => {
     event.preventDefault();
@@ -89,7 +95,9 @@ export default class Signup extends Component {
 
   /**
   * Makes request to AWS Cognito to sign up user. Sign up progression is updated
-  * if an error occurs to redirect user back to page 1 of Sign up.
+  * upon error to redirect user back to page 1 of Sign up and make changes.
+  * Since the state of fields are stored, the user only needs to make changes to
+  * the fields with errors e.g. email already exists
   */
   handleSubmitPageTwo = async event => {
     event.preventDefault();
@@ -108,13 +116,17 @@ export default class Signup extends Component {
           'custom:customer_ID': ''
         }
       });
+
       this.setState({
         newUser
       });
+
     } catch (e) {
+      // currently all errors will redirect user back to page 1 of sign up form
       alert(e.message);
       this.setState({ pageOneComplete: false });
-      /* EMAIL UNAVAILABLE ERROR MSG
+
+      /* For more specific error handling e.g. email already exists:
       if (e.message === "An account with the given email already exists.") {
         this.setState({ pageOneComplete: false });
       }
@@ -124,7 +136,11 @@ export default class Signup extends Component {
     this.setState({ isLoading: false });
   }
 
-
+  /**
+  * Confirms user account with code and automatically signs them in and redirects
+  * to homepage for authenticated users (management portal landing). A Stripe
+  * customer object is also created and stores the ID in Cognito custom attribute.
+  **/
   handleConfirmationSubmit = async event => {
     event.preventDefault();
 
@@ -134,7 +150,7 @@ export default class Signup extends Component {
       await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
       await Auth.signIn(this.state.email, this.state.password);
 
-      // create a new customer for this account in Stripe
+      // create a new customer object for this account in Stripe
       const stripeCustomer = await this.createStripeCustomer({
         email: this.state.email
       });
@@ -144,6 +160,7 @@ export default class Signup extends Component {
         "custom:customer_ID": stripeCustomer.customerID
       });
 
+      // redirect user to homepage / management portal landing
       this.props.userHasAuthenticated(true);
       this.props.history.push("/");
     } catch (e) {
@@ -152,6 +169,9 @@ export default class Signup extends Component {
     }
   }
 
+  /**
+  * Calls backend API for creating a Stripe customer object.
+  **/
   createStripeCustomer(email) {
     return API.post("notes", "/createCustomer", {
       body: email
@@ -159,52 +179,6 @@ export default class Signup extends Component {
   }
 
 
-  /**
-  * Renders verification page for user to input confirmation code from their email
-  */
-  renderConfirmationForm() {
-    return (
-      <div className="signup-verification">
-        <form onSubmit={this.handleConfirmationSubmit}>
-          <h3>One last step.</h3>
-          <p id="verify">You&#39;ll receive an email within a few minutes to verify your
-          account with a confirmation code. Please enter the code below.</p>
-          <FormGroup controlId="confirmationCode" bsSize="large">
-            <ControlLabel>Confirmation Code</ControlLabel>
-            <FormControl
-              autoFocus
-              type="tel"
-              value={this.state.confirmationCode}
-              onChange={this.handleChange}
-            />
-            <HelpBlock>Please check your email for the code.</HelpBlock>
-          </FormGroup>
-          <LoaderButton
-            block
-            bsSize="large"
-            disabled={!this.validateConfirmationForm()}
-            type="submit"
-            isLoading={this.state.isLoading}
-            text="Verify"
-            loadingText="Verifying…"
-          />
-        </form>
-      </div>
-    );
-  }
-
-  /**
-  * Decision for rendering page 1 or page 2 of sign up based on current state
-  */
-  renderForm() {
-    return (
-      <div>
-      {this.state.pageOneComplete
-        ? this.renderForm2()
-        : this.renderForm1()}
-      </div>
-    );
-  }
 
   /**
   * Renders page 1 of Sign Up form with the following fields:
@@ -321,6 +295,56 @@ export default class Signup extends Component {
     )
   }
 
+  /**
+  * Renders verification page for user to input confirmation code from their email
+  */
+  renderConfirmationForm() {
+    return (
+      <div className="signup-verification">
+        <form onSubmit={this.handleConfirmationSubmit}>
+          <h3>One last step.</h3>
+          <p id="verify">You&#39;ll receive an email within a few minutes to verify your
+          account with a confirmation code. Please enter the code below.</p>
+          <FormGroup controlId="confirmationCode" bsSize="large">
+            <ControlLabel>Confirmation Code</ControlLabel>
+            <FormControl
+              autoFocus
+              type="tel"
+              value={this.state.confirmationCode}
+              onChange={this.handleChange}
+            />
+            <HelpBlock>Please check your email for the code.</HelpBlock>
+          </FormGroup>
+          <LoaderButton
+            block
+            bsSize="large"
+            disabled={!this.validateConfirmationForm()}
+            type="submit"
+            isLoading={this.state.isLoading}
+            text="Verify"
+            loadingText="Verifying…"
+          />
+        </form>
+      </div>
+    );
+  }
+
+  /**
+  * Decision for rendering page 1 or page 2 of sign up based on progression.
+  */
+  renderForm() {
+    return (
+      <div className="signup-form">
+      {this.state.pageOneComplete
+        ? this.renderForm2()
+        : this.renderForm1()}
+      </div>
+    );
+  }
+
+  /**
+  * Decision for rendering sign up form or verification based on progression.
+  **/
   render() {
     return (
       <div className="Signup">
