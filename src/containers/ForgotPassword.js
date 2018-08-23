@@ -9,6 +9,9 @@ import {
 import { Auth } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
 
+/**
+ * Renders form for resetting user's account password with verification.
+ **/
 export default class ForgotPassword extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +35,8 @@ export default class ForgotPassword extends Component {
   }
 
   /**
-   * Request Cognito to confirm code and reset password to new one.
+   * Request Cognito to confirm code and reset password to new one. User is
+   * redirect to password success page and logged in automatically.
    **/
   handleResetPasswordSubmit = async event => {
     event.preventDefault();
@@ -51,6 +55,9 @@ export default class ForgotPassword extends Component {
     this.setState({ isLoading: false });
   }
 
+ /**
+  * Trigger Cognito to send a code for resetting account password.
+  **/
   handleEmailSubmit = async event => {
     event.preventDefault();
 
@@ -65,6 +72,9 @@ export default class ForgotPassword extends Component {
     this.setState({ isLoading: false });
   }
 
+  /**
+   * Request Cognito to send another confirmation code.
+   **/
   resendConfirmationCode = async event => {
 
     this.setState({ resendIsLoading: true });
@@ -76,8 +86,6 @@ export default class ForgotPassword extends Component {
       alert(e.message);
     }
     this.setState({ resendIsLoading: false });
-
-
   }
 
   /**
@@ -87,6 +95,9 @@ export default class ForgotPassword extends Component {
     return this.state.email.length > 0;
   }
 
+  /**
+   * Validates email reset form.
+   **/
   validateResetPasswordForm() {
     return (
       this.state.confirmationCode.length > 0 &&
@@ -105,6 +116,10 @@ export default class ForgotPassword extends Component {
     );
   }
 
+  /**
+   * Render form for confirmation code and setting new password. User can request
+   * for a new code to be sent.
+   **/
   renderResetPasswordForm() {
     return (
       <div className="ConfirmationForm">
@@ -165,6 +180,9 @@ export default class ForgotPassword extends Component {
     );
   }
 
+  /**
+   * Renders form for requesting verification code to be sent to given email.
+   **/
   renderEmailForm() {
     return (
       <div className="EmailForgotPasswordForm">
