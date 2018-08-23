@@ -1,0 +1,32 @@
+@media all and (min-width: 480px) {
+  .SubscriptionPayment  {
+    padding: 60px 0;
+    text-align: center;
+    margin: auto;
+    max-width: 600px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
+    color: ##3B4045;
+  }
+
+  .SubscriptionPayment  form {
+    margin: 0 auto;
+    max-width: 480px;
+  }
+
+  .Subscribed  {
+    padding: 60px 0;
+    text-align: center;
+    margin: auto;
+    max-width: 600px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
+    color: ##3B4045;
+  }
+
+  .Subscribed form {
+    margin: 0 auto;
+    max-width: 600px;
+  }
+
+}

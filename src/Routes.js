@@ -9,7 +9,6 @@ import NotFound from "./containers/NotFound";
 import AppliedRoute from "./components/AppliedRoute";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
-import TestPaymentForm from "./containers/TestPaymentForm";
 import ForgotPassword from "./containers/ForgotPassword";
 import TermsOfService from "./containers/TermsOfService";
 import PrivacyPolicy from "./containers/PrivacyPolicy";
@@ -28,7 +27,6 @@ export default ({ childProps }) =>
     <Route path="/termsofservice" exact component={TermsOfService} props={childProps} />
     <Route path="/privacypolicy" exact component={PrivacyPolicy} props={childProps} />
     <AuthenticatedRoute path="/subscription/subscribe" exact component={Subscribe} props={childProps} />
-    <AuthenticatedRoute path="/subscription/testpaymentform" exact component={TestPaymentForm} props={childProps} />
     <AuthenticatedRoute path="/notes/new" exact component={NewNote} props={childProps} />
     <AuthenticatedRoute path="/notes/:id" exact component={Notes} props={childProps} />
     <AuthenticatedRoute path="/account/details" exact component={Account} props={childProps} />
