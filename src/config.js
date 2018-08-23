@@ -1,9 +1,5 @@
 const dev = {
   STRIPE_KEY: "pk_test_sMqwDrU78tzHpaMyEjPW4lk6",
-  s3: {
-    REGION: "eu-west-2",
-    BUCKET: "admin-portal-dev-attachmentsbucket-fm4i68pe3llc"
-  },
   apiGateway: {
     REGION: "eu-west-2",
     URL: "https://g19hgig8b4.execute-api.eu-west-2.amazonaws.com/dev"
@@ -19,10 +15,6 @@ const dev = {
 
 const prod = {
   STRIPE_KEY: "pk_test_sMqwDrU78tzHpaMyEjPW4lk6",
-  s3: {
-    REGION: "eu-west-2",
-    BUCKET: "admin-portal-prod-attachmentsbucket-14rvb84isit9f"
-  },
   apiGateway: {
     REGION: "eu-west-2",
     URL: "https://5tdirmxzy6.execute-api.eu-west-2.amazonaws.com/prod"
@@ -42,6 +34,5 @@ const config = process.env.REACT_APP_STAGE === 'prod'
 
 export default {
   // Add common config values here
-  MAX_ATTACHMENT_SIZE: 5000000,
   ...config
 };
