@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Auth } from "aws-amplify";
+import { Auth, API } from "aws-amplify";
 import { ListGroup, ListGroupItem, Checkbox } from "react-bootstrap";
 import LinkButton from "../components/LinkButton";
-import "./Account.css";
+import "./AccountDetails.css";
 
-export default class Account extends Component {
+export default class AccountDetails extends Component {
   constructor(props) {
     super(props);
 
@@ -16,31 +16,69 @@ export default class Account extends Component {
       password: "*************",
       activeSubscription: false,
       billsByEmail: false,
+      attributeNames: {
+        firstName: "First Name",
+        lastName: "Last Name",
+        companyName: "Company Name",
+        email: "Email",
+        password: "Password",
+        activeSubscription: "Active Bounce Subscription",
+        billsByEmail: "Receive Bills by Email",
+      }
+
     }
   }
 
+  /**
+   * Fetch customer account details from Cognito. Custom attributes must be
+   * accessed differently (use slicing operating and prefix with "custom:" ).
+   * Subscription status is fetched from Stripe customer object.
+   **/
   async componentDidMount() {
     try {
       const userInfo = await Auth.currentUserInfo();
       this.setState({
         firstName: userInfo.attributes.given_name,
         lastName: userInfo.attributes.family_name,
-        companyName: userInfo.attributes.companyName,
+        companyName: userInfo.attributes["custom:company_name"],
         email: userInfo.attributes.email
-      })
+      });
+
+      const customer = userInfo.attributes["custom:customer_ID"];
+      console.log(customer);
+      const customerObj = await this.getCustomer({ customer });
+
+      // does the customer have an active Bounce subscription?
+      if (customerObj.subscriptions.data.length > 0) {
+        this.setState({ activeSubscription: true });
+      }
     }
     catch(e) {
       alert(e.message);
     }
   }
 
+  /**
+   * Call API for getting customer object from Stripe.
+   **/
+  getCustomer(details) {
+    return API.post("notes", "/getCustomer", {
+      body: details
+    })
+  }
+
+  /**
+  * Updates the state of the checkbox.
+  **/
   handleChangeCheckbox = event => {
     this.setState({
       [event.target.id]: event.target.checked
     });
-    //this method should also update user's bills by email preference to DB?
   }
 
+  /**
+   * Render customer's account details as a list.
+   **/
   render() {
     return (
       <div className="AccountDetails">
@@ -52,22 +90,17 @@ export default class Account extends Component {
     );
   }
 
+  /**
+   * Concatenate attribute names with the customer's details.
+   **/
   renderAccountDetails(userDetails) {
-    const attributeNames = {
-      firstName: "First Name",
-      lastName: "Last Name",
-      companyName: "Company Name",
-      email: "Email",
-      password: "Password",
-      activeSubscription: "Active Bounce Subscription",
-      billsByEmail: "Receive Bills by Email?"
-    }
 
-    const userInfo = Object.keys(userDetails);
+    //keys list is sliced to omit the __proto__ object entry from array.
+    const userInfo = Object.keys(userDetails).slice(0,7);
     return (
       userInfo.map(
         (key, index) =>
-          <div>{this.renderAccountDetailsSwitch(key, attributeNames, userDetails)}</div>
+          <div>{this.renderAccountDetailsSwitch(key, this.state.attributeNames, userDetails)}</div>
       )
     );
   }
@@ -102,23 +135,27 @@ export default class Account extends Component {
                 </ListGroupItem>;
       case 'activeSubscription':
         return <ListGroupItem>
-                {attributeNames[key]}
+                {attributeNames[key].concat(': ')}
                 <Checkbox
                   inline
                   id="bounceSubscriptionCheckbox"
                   checked={this.state.activeSubscription}
                   disabled={true}
-                  />
+                >
+                  {this.state.activeSubscription ? 'Yes' : 'No' }
+                </Checkbox>
                 </ListGroupItem>;
       case 'billsByEmail':
       return <ListGroupItem>
-              {attributeNames[key]}
+              {attributeNames[key].concat('? ')}
               <Checkbox
                 inline
                 id="billsByEmail"
                 checked={this.state.billsByEmail}
                 onChange={this.handleChangeCheckbox}
-                />
+              >
+                {this.state.billsByEmail ? 'Yes' : 'No' }
+              </Checkbox>
               </ListGroupItem>;
       default:
         return (

@@ -13,7 +13,7 @@ import ForgotPassword from "./containers/ForgotPassword";
 import TermsOfService from "./containers/TermsOfService";
 import PrivacyPolicy from "./containers/PrivacyPolicy";
 import ResetPasswordSuccess from "./containers/ResetPasswordSuccess";
-import Account from "./containers/Account";
+import AccountDetails from "./containers/AccountDetails";
 import AccountChangePassword from "./containers/AccountChangePassword";
 import AccountChangeEmail from "./containers/AccountChangeEmail";
 import Subscribe from "./containers/Subscribe";
@@ -29,7 +29,7 @@ export default ({ childProps }) =>
     <AuthenticatedRoute path="/subscription/subscribe" exact component={Subscribe} props={childProps} />
     <AuthenticatedRoute path="/notes/new" exact component={NewNote} props={childProps} />
     <AuthenticatedRoute path="/notes/:id" exact component={Notes} props={childProps} />
-    <AuthenticatedRoute path="/account/details" exact component={Account} props={childProps} />
+    <AuthenticatedRoute path="/account/details" exact component={AccountDetails} props={childProps} />
     <AuthenticatedRoute path="/account/changepassword" exact component={AccountChangePassword} props={childProps} />
     <AuthenticatedRoute path="/account/changeemail" exact component={AccountChangeEmail} props={childProps} />
     <AuthenticatedRoute path="/resetpasswordsuccess" exact component={ResetPasswordSuccess} props={childProps} />
