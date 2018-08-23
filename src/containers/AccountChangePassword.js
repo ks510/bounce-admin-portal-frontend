@@ -9,7 +9,10 @@ import {
 import { Auth } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
 
-
+/**
+ * Renders form for changing user's account password. User is redirected to
+ * password success page on successful change.
+ **/
 export default class AccountChangePassword extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +25,9 @@ export default class AccountChangePassword extends Component {
     };
   }
 
+  /**
+  * Updates the state of form text fields.
+  **/
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
@@ -29,13 +35,13 @@ export default class AccountChangePassword extends Component {
   }
 
   /**
-   * Request Cognito to confirm code and reset password to new one.
+   * Request Cognito to confirm code and reset password to new one. Shows error
+   * if the current password is entered incorrectly.
    **/
   handleResetPasswordSubmit = async event => {
     event.preventDefault();
 
     this.setState({ isLoading: true });
-
 
     try {
       const user = await Auth.currentAuthenticatedUser();
@@ -47,9 +53,12 @@ export default class AccountChangePassword extends Component {
     this.setState({ isLoading: false });
   }
 
+  /**
+   * Validates form fields.
+   **/
   validateResetPasswordForm() {
     return (
-      this.state.oldPassword.length > 8 &&
+      this.state.oldPassword.length > 6 &&
       this.state.newPassword.length > 8 &&
       this.state.confirmNewPassword === this.state.newPassword
     );
