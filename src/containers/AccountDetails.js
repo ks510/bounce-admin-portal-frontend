@@ -4,6 +4,10 @@ import { ListGroup, ListGroupItem, Checkbox } from "react-bootstrap";
 import LinkButton from "../components/LinkButton";
 import "./AccountDetails.css";
 
+/**
+ * Fetches and renders user's account details with sensitive information hidden
+ * e.g. password, email partially hidden
+ **/
 export default class AccountDetails extends Component {
   constructor(props) {
     super(props);
