@@ -80,7 +80,7 @@ class App extends Component {
                           <MenuItem>Current Usage</MenuItem>
                         </LinkContainer>
                         <LinkContainer to="/subscription/subscribe">
-                          <MenuItem>Purchase Subscription</MenuItem>
+                          <MenuItem>Purchase&#47;Cancel Subscription</MenuItem>
                         </LinkContainer>
                         <LinkContainer to="/subscription/paymentmethods">
                           <MenuItem>Manage Payment Methods</MenuItem>
