@@ -9,7 +9,10 @@ import { Auth } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
 import "./AccountChangeEmail.css";
 
-
+/**
+ * Renders form for changing account email. User must also verify their new email
+ * by a code sent to their new email address.
+ **/
 export default class AccountChangeEmail extends Component {
   constructor(props) {
     super(props);
@@ -23,10 +26,11 @@ export default class AccountChangeEmail extends Component {
       resentCode: false,
       resendIsLoading: false
     };
-
-    console.log(this.state.codeSent);
   }
 
+/**
+  * Updates the state of form text fields.
+  **/
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
@@ -35,7 +39,7 @@ export default class AccountChangeEmail extends Component {
 
 /**
   * Allows user to revisit change email page later and still be able to verify.
-  */
+  **/
   async componentDidMount() {
     try {
       const userInfo = await Auth.currentUserInfo();
@@ -59,7 +63,7 @@ export default class AccountChangeEmail extends Component {
 
     try {
       const userInfo = await Auth.currentUserInfo();
-      console.log(userInfo.attributes.email);
+
       if (this.confirmCurrentEmail(this.state.currentEmail, userInfo.attributes.email)) {
         const user = await Auth.currentAuthenticatedUser();
         await Auth.updateUserAttributes(user, {
@@ -75,6 +79,14 @@ export default class AccountChangeEmail extends Component {
     this.setState({ isLoading: false });
   }
 
+  confirmCurrentEmail(inputEmail, userAccountEmail) {
+    return inputEmail === userAccountEmail;
+  }
+
+  /**
+   * Verify user's new email using the confirmation code provided. Redirects
+   * user back to portal landing page on success.
+   **/
   handleEmailConfirmation = async event => {
     event.preventDefault();
 
@@ -90,17 +102,20 @@ export default class AccountChangeEmail extends Component {
     this.setState({ isLoading: false });
   }
 
+  /**
+   * Sends a new confirmation code to the user's new email for verificaiton.
+   **/
   resendConfirmationCode = async event => {
 
     this.setState({ resendIsLoading: true });
     try {
       const userInfo = await Auth.currentUserInfo();
       const user = await Auth.currentAuthenticatedUser();
-      // Auth doesn't have resend confirmation code method for attributes
+      // Auth doesn't have resend confirmation code method
       // Therefore, update user's email to a non-existent email and then update
-      // again with their new email to trigger a new confirmation email.
+      // again with their new email to trigger a new confirmation code email.
       await Auth.updateUserAttributes(user, {
-        "email": "dummyplaceholder@bouncebot.io"
+        "email": "dummyplaceholder1234@bouncebot.io"
       });
       await Auth.updateUserAttributes(user, {
         "email": userInfo.attributes.email
@@ -110,14 +125,15 @@ export default class AccountChangeEmail extends Component {
     } catch (e) {
       alert(e.message);
     }
+
     this.setState({ resendIsLoading: false });
 
   }
 
-  confirmCurrentEmail(inputEmail, userAccountEmail) {
-    return inputEmail === userAccountEmail;
-  }
-
+  /**
+   * Validates password fields of the form by checking if it is filled in.
+   * Note the form control component handles checking for @ in the email fields.
+   **/
   validateEmailUpdateForm() {
     return (
       this.state.currentEmail.length > 0 &&
@@ -125,6 +141,9 @@ export default class AccountChangeEmail extends Component {
     );
   }
 
+  /**
+   * Validates confirmation code field by checking if it filled in.
+   **/
   validateConfirmationForm() {
     return this.state.confirmationCode > 0;
   }
@@ -139,6 +158,9 @@ export default class AccountChangeEmail extends Component {
     )
   }
 
+  /**
+   * Render form for updating account email.
+   **/
   renderEmailUpdateForm() {
     return (
       <div className="EmailUpdateForm">
@@ -177,6 +199,9 @@ export default class AccountChangeEmail extends Component {
     );
   }
 
+  /**
+   * Render form for verifiying new email.
+   **/
   renderConfirmationForm() {
     return (
       <div className="ConfirmationForm">
@@ -216,13 +241,9 @@ export default class AccountChangeEmail extends Component {
                 text="Not received the email?"
                 loadingText="Resending code..." />}
         </div>
-
       </div>
     );
   }
 
-  handleClick = async event => {
-    alert("Clicked");
-  }
 
 }
